@@ -1,0 +1,9 @@
+{
+    "workbench.settings.useSplitJSON": false,
+    "javascript.preferences.organizeImports": {
+
+    },
+    "emmet.includeLanguages":{
+        "javascript":"javascriptreact"
+    }
+}

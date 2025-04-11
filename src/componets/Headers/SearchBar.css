@@ -1,0 +1,116 @@
+/* General container styling */
+.product-list-container {
+ 
+  padding-left: 300px;
+  background-color: #f0f4f8; /* Light background color for contrast */
+  font-family: 'Arial', sans-serif;
+  height: 100px;
+  box-sizing: border-box;
+}
+
+/* Title styling */
+.product-list-title {
+ 
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c3e50; /* Darker text for visibility */
+  text-align: center;
+  margin-bottom: 20px;
+  text-transform: capitalize; /* Capitalize category from URL */
+}
+
+/* Product grid layout */
+.product-grid {
+  display: grid;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+/* Individual product card */
+.product-card {
+  background-color: #fff; /* White card for better readability */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+
+
+/* Product image */
+.product-image {
+  width: 100%;
+  height: 100px;
+  object-fit: cover; /* Ensure image fits without distortion */
+  border-bottom: 1px solid #eee; /* Separate image and content */
+}
+
+/* Product info */
+.product-info {
+  padding: 15px;
+  text-align: center;
+}
+
+.product-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #34495e; /* Neutral dark color */
+}
+
+.product-category {
+  font-size: 14px;
+  font-weight: 500;
+  color: #7f8c8d; /* Gray for subtlety */
+  margin: 5px 0;
+  text-transform: uppercase;
+}
+
+.product-description {
+  font-size: 14px;
+  color: #555; /* Slightly lighter than title */
+  margin: 10px 0;
+}
+
+.product-price {
+  font-size: 18px;
+  font-weight: bold;
+  color: #e74c3c; /* Red to highlight price */
+  margin: 10px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .product-title {
+      font-size: 16px;
+  }
+
+  .product-price {
+      font-size: 16px;
+  }
+
+  .product-grid {
+      grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      gap: 15px;
+  }
+}
+
+.product-cart {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: #007bff; /* Blue background */
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  user-select: none; /* Prevent text selection */
+}
+
+.product-cart:active {
+  background-color: #003f7f; /* Even darker blue on click */
+  transform: scale(0.95); /* Slight shrink effect on click */
+}

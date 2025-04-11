@@ -1,0 +1,104 @@
+/* General Container Styles */
+.category-container {
+  width: 70%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-family: Arial, sans-serif;
+}
+
+.category-container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form Styles */
+.add-category-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.add-category-form label {
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.add-category-form input[type="text"],
+.add-category-form input[type="file"] {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.add-category-form button {
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.add-category-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Table Styles */
+.category-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  text-align: left;
+}
+
+.category-table th,
+.category-table td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+.category-table th {
+  background-color: #f4f4f4;
+  color: #333;
+}
+
+.category-table td {
+  vertical-align: middle;
+}
+
+.category-image {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+/* Button Styles in Table */
+.category-table button {
+  padding: 5px 10px;
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+
+.category-table button:last-child {
+  background-color: #28a745;
+}
+
+.category-table button:hover {
+  opacity: 0.9;
+}

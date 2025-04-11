@@ -1,0 +1,120 @@
+/* Ensure page occupies full width */
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+/* Reset all elements */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Fixed Header styling */
+.header {
+  width: 100vw;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(to right, #6a11cb, #2575fc);
+  color: white;
+  padding: 15px 4%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixed instead of sticky */
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  flex-wrap: wrap;
+}
+
+/* Create space below fixed header */
+.main-content {
+  padding-top: 90px; /* Adjust this based on header height */
+}
+
+/* Logo */
+.logo {
+  font-size: 22px;
+  font-weight: bold;
+  color: #fff;
+  white-space: nowrap;
+}
+
+/* Search input section */
+.search-input-wrapper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0 30px;
+  max-width: 600px;
+}
+
+/* Input field */
+.search-input {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  background-color: #f1f2f6;
+  color: #2f3542;
+}
+
+/* Search button */
+.search-button {
+  padding: 10px 20px;
+  background-color: #ff6b6b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.search-button:hover {
+  background-color: #ff4757;
+}
+
+/* Profile, Cart, Admin buttons */
+.profile {
+  margin-left: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  background-color: #0fc3df;
+  padding: 8px 14px;
+  border-radius: 6px;
+  color: #010000;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  white-space: nowrap;
+}
+.profile:hover {
+  background-color: #ffffff;
+}
+
+/* Responsive layout */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 15px 4%;
+  }
+
+  .search-input-wrapper {
+    margin: 10px 0;
+    width: 100%;
+  }
+
+  .profile {
+    margin: 6px 6px 0 0;
+  }
+
+  .logo {
+    margin-bottom: 10px;
+    text-align: center;
+  }
+}

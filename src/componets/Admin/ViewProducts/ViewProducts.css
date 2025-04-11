@@ -1,0 +1,159 @@
+/* General container styling */
+.view-products-container {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Table styling */
+.products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.products-table th {
+  background-color: #4A90E2;
+  color: #fff;
+  padding: 12px;
+  text-align: left;
+}
+
+.products-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  text-align: center;
+}
+
+.products-table tr:hover {
+  background-color: #eaf7ff;
+}
+
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* Action Buttons */
+.edit-button,
+.delete-button,
+.discount-button {
+  border: none;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button {
+  background-color: #f39c12;
+}
+
+.edit-button:hover {
+  background-color: #e67e22;
+}
+
+.delete-button {
+  background-color: #e74c3c;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+.discount-button {
+  background-color: #2ecc71;
+}
+
+.discount-button:hover {
+  background-color: #27ae60;
+}
+
+/* Discount Input Styling */
+.discount-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.inline-discount-input {
+  margin-left: 8px;
+  padding: 6px 8px;
+  width: 60px;
+  border: 2px solid #2ecc71;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.inline-discount-input:focus {
+  border-color: #27ae60;
+}
+
+/* Edit Modal Styling */
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+/* Modal Form Inputs */
+.modal-content input {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+/* Modal Buttons */
+.modal-content button {
+  background-color: #3498db;
+  border: none;
+  color: white;
+  padding: 6px 12px;
+  margin-right: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #2980b9;
+}
+
+/* Responsive Table - Optional */
+@media (max-width: 768px) {
+  .products-table th,
+  .products-table td {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .modal-content {
+    width: 90%;
+  }
+}

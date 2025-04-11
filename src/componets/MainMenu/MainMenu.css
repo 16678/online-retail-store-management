@@ -1,0 +1,141 @@
+/* Reset default margin/padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Body background */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f6f8;
+}
+
+/* Fixed Header Container */
+.head {
+  width: 100%;
+  background: linear-gradient(to right, #00b4db, #0083b0); /* Blue gradient */
+  padding-top: 75px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  position: fixed; /* Fixed position */
+  top: 0;
+  left: 0;
+  z-index: 999;
+}
+
+/* Push down content below the fixed header */
+.main-content {
+  padding-top: 90px; /* Adjust to header height */
+}
+
+/* Flex layout for menu */
+.main-menu {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+/* Hamburger Menu Button */
+.main-menu-button {
+  background-color: #ff6b6b; /* Bright red */
+  border: none;
+  padding: 10px 16px;
+  font-size: 22px;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+  margin-right: 20px;
+}
+
+.main-menu-button:hover {
+  background-color: #ff4757;
+}
+
+/* Navigation Links */
+.menu-links {
+  display: flex;
+  gap: 16px;
+}
+
+.menu-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+  padding: 8px 14px;
+  border-radius: 6px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.menu-link:hover {
+  background-color: #1dd1a1; /* Mint green */
+  color: #2c3e50;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #f1f2f6;
+  border-top: 2px solid #ced6e0;
+  padding: 20px 5%;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  z-index: 998;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Category List Layout */
+.dropdown-menu ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+/* Category Item Style */
+.dropdown-menu li {
+  padding: 10px 12px;
+  font-size: 16px;
+  color: #100202;
+  border-radius: 5px;
+  background: #fcf8fa; /* Category background color */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* Category Hover */
+.dropdown-menu li:hover {
+  background-color: #d76ed0; /* Hover color */
+  color: #030510;
+}
+
+/* Scrollbar Styling */
+.dropdown-menu ul::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.dropdown-menu ul::-webkit-scrollbar-thumb {
+  background: #576574;
+  border-radius: 5px;
+}
+
+.dropdown-menu ul::-webkit-scrollbar-track {
+  background: #dcdde1;
+}
+/* Ensure marquee sits inline with other elements */
+.main-menu marquee {
+  flex: 1;
+  margin: 0 20px;
+  white-space: nowrap;
+  font-size: 18px;
+  font-weight: 600;
+  color:black;
+  background: transparent;
+  padding: 8px 0;
+}

@@ -1,0 +1,56 @@
+.login-container {
+  max-width: 400px;
+  margin: 5% auto;
+  padding: 2rem;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.login-title {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.6rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.login-button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.login-message {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.login-message.success {
+  color: green;
+}
+
+.login-message.error {
+  color: red;
+}
