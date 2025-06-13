@@ -1,0 +1,60 @@
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #1e293b;
+  color: white;
+  padding: 20px 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+/* Sidebar Items */
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+
+.home-icon { color: #00e6ac; }
+.profile-icon { color: #ffd166; }
+.earnings-icon { color: #06d6a0; }
+.orders-icon { color: #118ab2; }
+.details-icon { color: #ef476f; }
+.history-icon { color: #8e44ad; }
+
+.sidebar-item:hover {
+  background-color: #334155;
+}
+
+.sidebar-icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+/* Dashboard Layout */
+.dashboard-container {
+  display: flex;
+}
+
+/* Main Content */
+.main-content {
+  margin-left: 220px; /* same as sidebar width */
+  padding: 20px;
+  width: calc(100% - 220px);
+  min-height: 100vh;
+  background-color: #f8fafc;
+  overflow-x: hidden;
+}

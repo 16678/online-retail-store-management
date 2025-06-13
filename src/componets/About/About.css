@@ -2,6 +2,7 @@
     max-width: 900px;
     margin: 40px auto;
     padding: 40px;
+    margin: 130px auto 50px;
     background: linear-gradient(to right, #fdfbfb, #ebedee);
     border-radius: 16px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
@@ -17,6 +18,7 @@
   }
   
   .about-container h2 {
+    text-align: left;
     font-size: 26px;
     color: #3498db;
     margin-top: 30px;

@@ -1,65 +1,154 @@
-/* Navbar Container */
+/* Base Sidebar Container */
 .navbar-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 270px;
+  background-color: #337b87;
+  border-right: 1px solid #eaeaea;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  padding: 2rem 1rem;
+  overflow-y: auto;
+  z-index: 1000;
   display: flex;
-  justify-content: center;
-  gap: 20px;
-  background: linear-gradient(135deg, #ff7eb3, #ff758c);
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  transition: all 0.3s ease-in-out;
 }
 
-/* Nav Card Styling */
-.nav-card {
-  background: white;
-  padding: 20px 25px;
-  border-radius: 12px;
-  text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Header Section */
+.navbar-header,h2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #e5edee;
+  padding: 1rem;
+  color: white;
+}
+
+.navbar-header h2 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.main-menu-button {
+  background-color: #1d5b66;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  display: none;
+  align-items: center;
+  gap: 6px;
   cursor: pointer;
-  box-shadow: 3px 5px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Navigation Card */
+.nav-card {
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .nav-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 5px 8px 12px rgba(0, 0, 0, 0.25);
+  background: #f1f1f1;
+  transform: scale(1.02);
 }
 
-/* Link Styling */
 .nav-card a {
-  text-decoration: none;
-  color: #333;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  font-weight: bold;
-  font-size: 18px;
-  transition: color 0.3s ease;
+  text-decoration: none;
+  padding: 1rem;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
-.nav-card a:hover {
-  color: #ff758c;
+/* Icon Box */
+.icon {
+  padding-left: 15px;
+  width: 50px;
+  height: 50px;
+  border-radius: 10px;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-/* Icon Styling */
-.nav-card p {
-  font-size: 28px;
-  margin: 0;
-  transition: transform 0.3s ease;
+.nav-card svg {
+  font-size: 20px;
+  color: white;
 }
 
-.nav-card:hover p {
-  transform: scale(1.2);
+/* Text */
+.nav-card span {
+  flex: 1;
 }
 
-/* Responsive Design */
+/* Hover Icon Effect */
+.nav-card:hover .icon {
+  transform: scale(1.1);
+}
+
+/* Color Themes */
+.nav-card:nth-child(2) .icon { background-color: #ff7675; }
+.nav-card:nth-child(3) .icon { background-color: #74b9ff; }
+.nav-card:nth-child(4) .icon { background-color: #55efc4; }
+.nav-card:nth-child(5) .icon { background-color: #fdcb6e; }
+.nav-card:nth-child(6) .icon { background-color: #a29bfe; }
+.nav-card:nth-child(7) .icon { background-color: #fab1a0; }
+.nav-card:nth-child(8) .icon { background-color: #00cec9; }
+.nav-card:nth-child(9) .icon { background-color: #636e72; }
+.nav-card:nth-child(10) .icon { background-color: #e17055; }
+.nav-card:nth-child(11) .icon { background-color: #ffeaa7; }
+.nav-card:nth-child(12) .icon { background-color: #00b894; }
+.nav-card:nth-child(13) .icon { background-color: #6c5ce7; }
+.nav-card:nth-child(14) .icon { background-color: #d63031; }
+.nav-card:nth-child(15) .icon { background-color: #0984e3; }
+.nav-card:nth-child(16) .icon { background-color: #fd79a8; }
+.nav-card:nth-child(17) .icon { background-color: #e84393; }
+.nav-card:nth-child(18) .icon { background-color: #2d3436; }
+
+/* Scrollbar Styling */
+.navbar-container::-webkit-scrollbar {
+  width: 6px;
+}
+.navbar-container::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+/* Responsive Mobile View */
 @media (max-width: 768px) {
   .navbar-container {
-    flex-wrap: wrap;
-    justify-content: center;
+    position: static;
+    width: 100%;
+    height: auto;
+    padding: 1rem;
+    display: none;
+    flex-direction: column;
+  }
+
+  .navbar-container.show-mobile-menu {
+    display: flex;
+  }
+
+  .main-menu-button {
+    display: flex;
   }
 
   .nav-card {
-    width: 140px;
+    width: 100%;
+  }
+
+  .navbar-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 }

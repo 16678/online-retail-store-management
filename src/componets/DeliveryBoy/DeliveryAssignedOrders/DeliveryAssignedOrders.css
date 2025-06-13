@@ -1,0 +1,98 @@
+/* Container for all orders */
+.orders-container {
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 0 20px;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Heading */
+h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #2c3e50;
+}
+
+/* Flex container to arrange order cards side by side */
+.orders-container > div.order-card {
+  display: inline-block;
+  vertical-align: top;
+  width: 30%; /* 3 cards per row with some gap */
+  margin: 0 1.5% 20px 1.5%;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
+  padding: 18px 22px;
+  transition: box-shadow 0.3s ease;
+  cursor: default;
+  box-sizing: border-box;
+  min-width: 280px;
+}
+
+.order-card:hover {
+  box-shadow: 0 8px 15px rgb(0 0 0 / 0.15);
+}
+
+/* Header inside each order card */
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.order-header h3 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #34495e;
+}
+
+/* Status badge */
+.order-status {
+  color: white;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Paragraph styles */
+p {
+  margin: 6px 0;
+  color: #555;
+  font-size: 0.9rem;
+}
+
+/* Details button */
+.details-btn {
+  margin-top: 15px;
+  padding: 8px 15px;
+  background-color: #27ae60;
+  border: none;
+  border-radius: 25px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.details-btn:hover {
+  background-color: #219150;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 900px) {
+  .orders-container > div.order-card {
+    width: 47%; /* 2 cards per row */
+    margin: 1.5% 1.5% 20px 1.5%;
+  }
+}
+
+@media (max-width: 600px) {
+  .orders-container > div.order-card {
+    width: 100%; /* 1 card per row */
+    margin: 10px 0;
+  }
+}

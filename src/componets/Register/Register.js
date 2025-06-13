@@ -9,69 +9,139 @@ function Register({ onRegister = () => {} }) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [popup, setPopup] = useState({ message: "", type: "" });
 
   const navigate = useNavigate();
 
+  const showPopup = (message, type = "success") => {
+    setPopup({ message, type });
+    setTimeout(() => setPopup({ message: "", type: "" }), 3000);
+  };
+
   async function save(event) {
     event.preventDefault();
-
-    const customerData = {
-      customername,
-      email,
-      password,
-      confirmPassword,
-      phoneNumber,
-    };
+    const customerData = { customername, email, password, confirmPassword, phoneNumber };
 
     try {
-      const response = await axios.post("http://localhost:8086/api/v1/customer/save", customerData, {
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await axios.post(
+        "http://localhost:8086/api/v1/customer/save",
+        customerData,
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      alert("Customer Registration Successful");
-
-      // Store customer data in localStorage
       localStorage.setItem("customer", JSON.stringify(response.data));
-
       onRegister(response.data);
-      navigate("/"); // Redirect to profile page
+
+      showPopup("Customer Registration Successful", "success");
+
+      setTimeout(() => {
+        navigate("/");
+      }, 1000);
     } catch (err) {
       console.error("Registration error:", err);
       const errorMessage = err.response?.data || err.message || "An unexpected error occurred.";
-      alert(`Registration failed: ${errorMessage}`);
+      showPopup(`Customer Registration Failed`, "error");
     }
   }
 
   return (
     <div>
-      <h1 className="Register">Register</h1>
+      
+      {popup.message && (
+        <div className={`popup-message popup-${popup.type}`}>
+          {popup.message}
+        </div>
+      )}
+
       <div className="container mt-4">
         <div className="card">
-          <form>
+        <h1 className="Register">Register</h1>
+
+          <form onSubmit={save}>
             <div className="form-group">
-              <label>Full Name</label>
-              <input type="text" className="form-control" placeholder="Enter Name" value={customername} onChange={(e) => setCustomername(e.target.value)} />
+              <label>
+                Full Name <span className="required-star">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter Name"
+                value={customername}
+                onChange={(e) => setCustomername(e.target.value)}
+                required
+              />
             </div>
+
             <div className="form-group">
-              <label>Email</label>
-              <input type="email" className="form-control" placeholder="Enter Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+              <label>
+                Email <span className="required-star">*</span>
+              </label>
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
             </div>
+
             <div className="form-group">
-              <label>Password</label>
-              <input type="password" className="form-control" placeholder="Enter Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+              <label>
+                Password <span className="required-star">*</span>
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Enter Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+              <small className="password-hint text-muted">
+                Password should contain letters, numbers & special characters
+              </small>
             </div>
+
             <div className="form-group">
-              <label>Confirm Password</label>
-              <input type="password" className="form-control" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+              <label>
+                Confirm Password <span className="required-star">*</span>
+              </label>
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+              />
             </div>
+
             <div className="form-group">
-              <label>Phone Number</label>
-              <input type="text" className="form-control" placeholder="Enter Phone Number" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} />
+              <label>
+                Phone Number <span className="required-star">*</span>
+              </label>
+              <input
+                type="text"
+                className="form-control"
+                placeholder="Enter Phone Number"
+                value={phoneNumber}
+                maxLength="10"
+                onChange={(e) => {
+                  const onlyNums = e.target.value.replace(/[^0-9]/g, "");
+                  if (onlyNums.length <= 10) {
+                    setPhoneNumber(onlyNums);
+                  }
+                }}
+                required
+              />
             </div>
-            <button type="submit" className="btn btn-primary mt-4" onClick={save}>
+
+            <button type="submit" className="btn btn-primary mt-4">
               Register
             </button>
           </form>
+
           <p className="mt-3 text-center">
             Already have an account? <Link to="/login">Login Here</Link>
           </p>

@@ -1,0 +1,37 @@
+.assign-orders-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+}
+
+.assign-orders-container h2 {
+  margin-bottom: 20px;
+}
+
+.assign-orders-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.assign-orders-table th,
+.assign-orders-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+.assign-orders-table select {
+  padding: 5px;
+}
+
+.assign-orders-table button {
+  background-color: #007bff;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.assign-orders-table button:hover {
+  background-color: #0056b3;
+}

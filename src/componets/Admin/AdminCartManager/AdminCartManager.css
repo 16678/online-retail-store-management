@@ -1,0 +1,111 @@
+.admin-cart-container {
+  padding: 2rem;
+  background-color: #f0f8ff;
+  min-height: 100vh;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-cart-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #2c3e50;
+  text-shadow: 1px 1px #ccc;
+}
+
+.no-data-text,
+.error-text {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #e74c3c;
+}
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.08);
+}
+
+.table-head-row {
+  background-color: #6c5ce7;
+  color: white;
+}
+
+.table-header,
+.table-cell {
+  padding: 12px;
+  border: 1px solid #ccc;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.table-body-row:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.table-body-row:nth-child(odd) {
+  background-color: #dfe6e9;
+}
+
+.product-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  display: block;
+  margin: 0 auto;
+}
+
+.delete-button {
+  background-color: #d63031;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: none;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* Responsive Styling */
+@media screen and (max-width: 768px) {
+  .admin-cart-container {
+    padding: 1rem;
+  }
+
+  .admin-cart-title {
+    font-size: 1.5rem;
+  }
+
+  .admin-table {
+    font-size: 0.8rem;
+  }
+
+  .table-header,
+  .table-cell {
+    padding: 8px;
+  }
+
+  .product-image {
+    width: 45px;
+    height: 45px;
+  }
+
+  .delete-button {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}

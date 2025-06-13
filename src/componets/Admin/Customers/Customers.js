@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Users.css';
+import './Customers.css';
 import axios from 'axios';
 
 const Users = () => {

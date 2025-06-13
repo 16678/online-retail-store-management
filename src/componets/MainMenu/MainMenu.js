@@ -1,69 +1,74 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import "./MainMenu.css";
 
-function MainMenu() {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+const MainMenu = () => {
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const categories = [
-    "Electronics",
-    "Cloths",
-    "Home & Furniture",
-    "Books",
-    "Vegetables & Fruits",
-    "Diary & Breakfast",
-    "Cold Drinks & Juices",
-    "Instant Frozen Food",
-    "Tea, Coffee & Frozen Drinks",
-    "Bakery & Biscuits",
-    "Atta, Rice & Dal",
-    "Dry Fruits, Masala & Oil",
-    "Personal Care",
-    "Pet Care",
-    "Beauty & Cosmetics",
-    "Accessories"
-  ];
+  useEffect(() => {
+    const loadCategories = async () => {
+      setLoading(true);
+      try {
+        const res = await axios.get("http://localhost:8086/categories/all");
+        setCategories(res.data || []);
+        setError("");
+      } catch (err) {
+        console.error("Error loading categories:", err);
+        setError("Failed to load categories.");
+        setCategories([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
+    loadCategories();
+  }, []);
+
+  const buildImageUrl = (path) => {
+    if (!path) return "/placeholder-category.png";
+    return `http://localhost:8086/images${path.startsWith("/") ? "" : "/"}${path}`;
   };
 
-  // Navigate to category page and close dropdown
-  const navigateToCategory = (category) => {
-    navigate(`/category/${category}`);
-    setIsDropdownOpen(false); // Close the dropdown
+  const handleCategoryClick = (categoryName) => {
+    navigate(`/category/${encodeURIComponent(categoryName)}`);
   };
 
   return (
-    <div className="head">
-      <div className="main-menu">
-        <button className="main-menu-button" onClick={toggleDropdown}>
-          &#9776;
-        </button>
-        <marquee>SARAT TECH Online Retail Store is a modern and user-friendly online shopping platform designed to bring convenience, quality, and savings right to your fingertips. Whether you're shopping for the latest electronics, stylish clothing, home essentials, groceries, or personal care items, Sarat Tech offers a wide range of products with fast delivery and unmatched service.</marquee>
-        <div className="menu-links">
-          <Link to="/" className="menu-link">Home</Link>
-          <Link to="/about" className="menu-link">About</Link>
-          <Link to="/contact" className="menu-link">Contact</Link>
+    <div className="main-menu-container">
+      {loading ? (
+        <div className="loading-message">Loading categories...</div>
+      ) : error ? (
+        <div className="error-message text-red-500">{error}</div>
+      ) : categories.length > 0 ? (
+        <div className="category-bar">
+          {categories.map((category) => (
+            <div
+              key={category.id || category._id || Math.random()}
+              className="category-item cursor-pointer hover:bg-green-100 transition px-2 py-2 rounded-md text-center"
+              onClick={() => handleCategoryClick(category.categoryName)}
+            >
+              <img
+                src={buildImageUrl(category.imagePath)}
+                alt={category.categoryName}
+                className="category-icon"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/placeholder-category.png";
+                }}
+              />
+              <div className="category-label">{category.categoryName}</div>
+            </div>
+          ))}
         </div>
-      </div>
-
-      {/* Dropdown Menu */}
-      {isDropdownOpen && (
-        <div className="dropdown-menu">
-          <ul>
-            {categories.map((category, index) => (
-              <li key={index} onClick={() => navigateToCategory(category)}>
-                {category}
-              </li>
-            ))}
-          </ul>
-        </div>
+      ) : (
+        <div className="text-gray-500">No categories available.</div>
       )}
     </div>
   );
-}
+};
 
 export default MainMenu;

@@ -1,46 +1,232 @@
-.add-admin-container {
-    width: 50%;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
+/* Base Styling */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #eef2f7, #f8fbff);
+  color: #2e2e2e;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+/* Wrapper */
+.admin-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 40px 20px;
+  min-height: 100vh;
+}
+
+/* Container */
+.admin-container {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+/* Card-like Containers */
+.admin-form-container,
+.admin-list-container {
+  background: #ffffff;
+  padding: 36px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  transition: box-shadow 0.4s ease, transform 0.3s ease;
+}
+
+.admin-form-container:hover,
+.admin-list-container:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Title */
+.admin-title,
+.admin-list-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 24px;
+  color: #2c3e50;
+  border-left: 6px solid #3498db;
+  padding-left: 14px;
+  letter-spacing: 0.5px;
+}
+
+/* Form */
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Input Group */
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #34495e;
+  font-size: 15px;
+}
+
+.input-group input {
+  padding: 14px 16px;
+  border: 1px solid #ced4da;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(52, 152, 219, 0.2);
+}
+
+/* Form Buttons */
+.form-buttons {
+  display: flex;
+  gap: 16px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.form-buttons button {
+  padding: 14px 22px;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.form-buttons button:hover {
+  transform: translateY(-2px);
+}
+
+.form-buttons button[type="submit"] {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  color: #ffffff;
+}
+
+.form-buttons button[type="submit"]:hover {
+  background: linear-gradient(135deg, #2d88c3, #256fa1);
+}
+
+.cancel-button {
+  background-color: #e74c3c;
+  color: #ffffff;
+}
+
+.cancel-button:hover {
+  background-color: #c0392b;
+}
+
+/* Message */
+.message {
+  margin-top: 20px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  font-weight: 600;
+  border-left: 5px solid #3498db;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Table */
+.admin-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 10px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 16px 18px;
+  text-align: left;
+  background: #ffffff;
+}
+
+.admin-table th {
+  background-color: #f1f3f5;
+  color: #2c3e50;
+  font-weight: 700;
+  border-bottom: 2px solid #ecf0f1;
+}
+
+.admin-table tbody tr {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  border-radius: 10px;
+}
+
+.admin-table tbody tr:hover {
+  background-color: #f5faff;
+}
+
+/* Action Buttons */
+.edit-button,
+.delete-button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.edit-button:hover,
+.delete-button:hover {
+  transform: scale(1.05);
+}
+
+.edit-button {
+  background-color: #27ae60;
+  color: #ffffff;
+}
+
+.edit-button:hover {
+  background-color: #1e8449;
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  color: #ffffff;
+}
+
+.delete-button:hover {
+  background-color: #c0392b;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 0 12px;
   }
-  
-  .add-admin-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .add-admin-form {
-    display: flex;
+
+  .form-buttons {
     flex-direction: column;
   }
-  
-  .add-admin-form label {
+
+  .form-buttons button {
+    width: 100%;
+  }
+
+  .edit-button,
+  .delete-button {
+    width: 100%;
     margin-bottom: 10px;
-    font-weight: bold;
   }
-  
-  .add-admin-form input {
-    padding: 10px;
-    margin: 5px 0;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+
+  .admin-table th,
+  .admin-table td {
+    padding: 12px;
   }
-  
-  .add-admin-form button {
-    padding: 10px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  .add-admin-form button:hover {
-    background-color: #45a049;
-  }
-  
+}

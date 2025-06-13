@@ -1,0 +1,25 @@
+.category-admin {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  .add-category {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  
+  .category-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 8px 0;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 6px;
+  }
+  
+  .category-list input {
+    margin-right: 10px;
+  }
+  

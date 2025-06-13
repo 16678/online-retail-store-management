@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import Sample from './componets/Admin/sample/sample.js';
 import Headers from "./componets/Headers/Headers";
 import MainMenu from "./componets/MainMenu/MainMenu";
-import ProductList from "./componets/ProductList/ProductList";
+import ProductList from "./componets/ProductList/ProductList.js";
 import Profile from "./componets/Profile/Profile";
 import About from "./componets/About/About";
 import Footer from "./componets/Footer/Footer";
@@ -15,19 +17,39 @@ import Home from "./componets/Home/Home";
 import ProductDetails  from "./componets/ProductDetails/ProductDetails";
 import ProductManagement from "./componets/Admin/ProductManagement";
 import AdminLogin from "./componets/AdminLogin/AdminLogin";
+import ImageUploader from "./componets/ImageUploader/ImageUploader";
+import ForgotPassword from "./componets/ForgotPassword/ForgotPassword";
 // Admin importing 
 import Navbar from "./componets/Admin/Navbar/Navbar";
+import DeliveryDashboard from "./componets/Admin/AdminDeliveryDashboard/DeliveryDashboard.js";
+import AdminCartManager from "./componets/Admin/AdminCartManager/AdminCartManager.js";
 import AddAdmin from "./componets/Admin/AddAdmin/AddAdmin";
 import AddCategory from "./componets/Admin/AddCategory/AddCategory";
 import AddProducts from "./componets/Admin/AddProducts/AddProducts";
 import Orders from "./componets/Admin/Orders/Orders";
-import Users from "./componets/Admin/Users/Users";
+import Customers from "./componets/Admin/Customers/Customers";
 import ViewProducts from "./componets/Admin/ViewProducts/ViewProducts";
 import CarousalAdmin from "./componets/Admin/AdminCarousel/Admincarousel";
+import AssignOrders from "./componets/Admin/AssignOrders/AssignOrders.js";
+import AdminManagement from "./componets/Admin/AdminManagement/AdminManagement";
+import CategoryAdmin from "./componets/Admin/CategoryAdmin/CategoryAdmin";
+import DeliveryBoyList from "./componets/Admin/DeliveryBoyList/DeliveryBoyList";
+import AdminCategoryUploader from "./componets/Admin/CategoryUploader/CategoryUploader.js";
+import DeliveryBoyQRCode from "./componets/Admin/DeliveryBoyQRCode/DeliveryBoyQRCode.js";
 //Delivery
-import Delivery from "./componets/DeliveryBoy/Dashboard";
+import Delivery from "./componets/DeliveryBoy/Dashboard/Dashboard";
+import DeliveryBoyLogIn from "./componets/DeliveryBoy/DeliveryBoyLogIn/DeliveryBoyLogIn.js";
+// import OrderScanner from "./componets/DeliveryBoy/OrderScanner/OrderScanner.js";
 import DeliveryHome from "./componets/DeliveryBoy/DeliveryHome/DeliveryHome";
+ import DeliveryBoyRegistration from './componets/DeliveryBoy/Registartion/Registration.js';
+import ProductSearch from "./componets/ProductSearch/ProductSearch";
+import DeliveryBoyProfile from "./componets/DeliveryBoy/DeliveryBoyProfile/DeliveryBoyProfile";
+import DeliveryAssignedOrders from "./componets/DeliveryBoy/DeliveryAssignedOrders/DeliveryAssignedOrders.js";
+import  OrderDetails from "./componets/DeliveryBoy/OrderDetails/OrderDetails.js";
+import DeliveryBoyScanner from "./componets/DeliveryBoy/DeliveryBoyScanner/DeliveryBoyScanner.js";
 import "./App.css";
+import SearchResults from "./componets/SearchResults/SearchResults.js";
+import  DeliveryEarnings from "./componets/DeliveryBoy/DeliveryEarnings/DeliveryEarnings.js";
 
 function App() {
   const [isSignupOpen, setSignupOpen] = useState(false);
@@ -89,7 +111,11 @@ function App() {
           {/* Login and Register */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<>
+               <Headers />
+                <MainMenu />
+                <Profile />
+          </>} />
 
           {/* Home Page */}
           <Route
@@ -101,6 +127,15 @@ function App() {
                 <Home />
                 <Footer />
               </>
+            }
+          />
+           <Route
+            path="/sample"
+            element={
+            
+              
+                <Sample/>
+              
             }
           />
 
@@ -152,7 +187,8 @@ function App() {
           <Route
             path="/add-products"
             element={
-              <>
+              <>  <Headers />
+                <MainMenu />
                 <AddProducts />
                 <Footer />
               </>
@@ -160,6 +196,7 @@ function App() {
           />
           {/* Profile Section */}
           <Route path="/profile" element={<Profile/>} />
+          
           {/* Category Page */}
           <Route
             path="/category/:category"
@@ -171,9 +208,49 @@ function App() {
                 <Footer />
               </>
             }
+          /> 
+          <Route
+            path="/product/:id"
+            element={
+              <>
+                <Headers />
+                <MainMenu />
+                <ProductDetails/>
+                <Footer />
+              </>
+            }
+          /><Route
+            path="/search"
+            element={
+              <>
+               <Headers />
+                <MainMenu />
+                <SearchResults/>
+                 <Footer />
+               
+              </>
+            }
+          />
+            <Route
+            path="/ForgotPassword"
+            element={
+              <>
+                <ForgotPassword/>
+               
+              </>
+            }
+          />
+           <Route
+            path="/ProductSearch"
+            element={
+              <>
+                <ProductSearch/>
+               
+              </>
+            }
           />
 
-          {/* Product Management Page */}
+          {/* Product Management Page
           <Route
             path="/product-management"
             element={
@@ -183,14 +260,31 @@ function App() {
                 <ProductManagement />
               </>
             }
+          /> */}
+   {/*Image Uploader */}
+   <Route
+            path="/imageUploader"
+            element={
+              <>
+                <ImageUploader/>
+                
+              </>
+            }
           />
-
 
 <Route
             path="/adminLogin"
             element={
               <>
                 <AdminLogin/>
+              </>
+            }
+          />
+          <Route
+            path="/Addcategory"
+            element={
+              <>
+                <AddCategory/>
               </>
             }
           />
@@ -201,6 +295,34 @@ function App() {
               <>
                 <Navbar />
                 <AddProducts />
+              </>
+            }
+          />
+               <Route
+            path="/admin/CategoryAdmin"
+            element={
+              <>
+                <Navbar />
+                <CategoryAdmin/>
+              </>
+            }
+          />
+           {/* Admin Management */}
+           <Route
+            path="/admin/management"
+            element={
+              <>
+                
+                <AdminManagement/>
+              </>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <>
+                
+                <AdminManagement/>
               </>
             }
           />
@@ -219,19 +341,19 @@ function App() {
             </>} />
           <Route path="/admin/view-products" element={
               <>
-            <Navbar />
+            {/* <Navbar /> */}
             <ViewProducts/>
               </>
             } />
           <Route path="/admin/orders" element={
                <>
-              <Navbar />
+            
                <Orders/>
                </>
           } />
-          <Route path="/admin/users" element={   <>
+          <Route path="/admin/Customers" element={   <>
             <Navbar />
-            <Users/>
+            < Customers/>
             </>} />
             <Route path="/admin/users" element={   <>
             <Navbar />
@@ -245,19 +367,105 @@ function App() {
             <Navbar />
             <CarousalAdmin/>
             </>} />
+            <Route path="/admin/CategoryUploader" element={   <>
+            <Navbar />
+            <AdminCategoryUploader/>
+            </>} />
 
+            <Route path="/admin/DeliveryBoyList" element={   <>
+            
+            <DeliveryBoyList/>
+            </>} />
+
+            <Route path="/admin/AssignOrders" element={   <>
+            <Navbar />
+            <AssignOrders/>
+            </>} />
+            
+                {/* <Route path="/admin/TrackDeliveries" element={   <>
+            <Navbar />
+            <TrackDeliveries/>
+            </>} /> */}
+
+           <Route path="/admin/DeliveryDashboard" element={   <>
+            <Navbar />
+            <DeliveryDashboard/>
+            </>} />
+             <Route path="/admin/AdminCartManager" element={   <>
+         
+            <AdminCartManager/>
+            </>} />
+
+            <Route path="/Admin/AddDeliveryBoy" element={   <>
+                   <Navbar />
+                <DeliveryBoyRegistration/>
+                </>} />
+                  <Route path="/Admin/DeliveryBoyQRCode" element={   <>
+                   <Navbar />
+                <DeliveryBoyQRCode/>
+                </>} />
           {/*Dlivery boy interface */}
+
+
             <Route path="/Delivery/Dashboard" element={   <>
-              <Navbar />
+             
            <Delivery/>
-           </>} />    
+           <DeliveryHome/>
+     
+           </>} />  
+            
+             <Route path="/Delivery/DeliveryBoyLogIn" element={   <>
+            
+           <DeliveryBoyLogIn/>
+     
+           </>} /> 
        
                 <Route path="/Delivery/Home" element={   <>
-                
+                  <Delivery/>
            <DeliveryHome/>
            </>} />
+           <Route path="/Delivery/Profile" element={   <>
+            <Delivery/>
+       
+                <DeliveryBoyProfile/>
+                </>} />
+        
             
+                 {/* <Route path="/Delivery/OrderScanner" element={   <>
+                   
+                <OrderScanner/>
+                </>} /> */}
+
+                <Route path="/Delivery/Registration" element={   <>
+                <Delivery/>
+                <DeliveryBoyRegistration/>
+                </>} />
+
+                     <Route path="/Delivery/DeliveryAssignedOrders" element={   <>
+                     <Delivery/>
+                <DeliveryAssignedOrders/>
+                </>} />
+
+                  <Route path="/Delivery/OrdersPage" element={   <>
+                  <Delivery/>
+                <OrderDetails/>
+                </>} />
+
+                  <Route path="/Delivery/DeliveryBoyScanner" element={   <>
+                  <Delivery/>
+                <DeliveryBoyScanner/>
+                </>} />
+
+            <Route path="/Delivery/DeliveryEarnings" element={   <>
+                  <Delivery/>
+                <DeliveryEarnings/>
+                </>} />
+                DeliveryEarnings
+
         </Routes>
+        
+            
+        
 
 
         {/* Render Signup Popup if it's open */}

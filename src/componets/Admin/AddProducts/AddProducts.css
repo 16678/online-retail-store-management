@@ -1,65 +1,102 @@
-/* Container styling */
-form {
-  max-width: 600px;
-  margin: 40px auto;
-  padding: 30px;
-  border: 1px solid #ccc;
-  border-radius: 12px;
+/* AddProducts.css */
+
+.product-upload-container {
+  width: 60%;
+  margin: 20px auto;
+  padding: 20px;
   background-color: #f9f9f9;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  color: #000; /* Default text color */
+  font-family: Arial, sans-serif;
 }
 
-/* Form header */
 h2 {
   text-align: center;
-  margin-bottom: 25px;
-  color: #333;
-}
-
-/* Label and input group */
-form > div {
-  display: flex;
-  flex-direction: column;
+  font-size: 26px;
   margin-bottom: 20px;
+  color: #000;
 }
 
-/* Labels */
-label {
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #555;
+.upload-message {
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #000;
 }
 
-/* Input fields */
-input[type="text"],
-input[type="number"],
-input[type="file"] {
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-group label {
+  font-size: 16px;
+  display: block;
+  margin-bottom: 5px;
+  color: #000;
+}
+
+.form-group input[type="text"],
+.form-group input[type="number"],
+.form-group input[type="file"],
+.form-group select {
+  width: 100%;
   padding: 10px;
-  border: 1px solid #bbb;
-  border-radius: 6px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  color: #000; /* Ensures input text is black */
+  background-color: #fff;
+}
+
+.form-group input[type="file"] {
+  padding: 5px;
+}
+
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.image-previews img {
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.upload-button {
+  width: 100%;
+  padding: 12px;
   font-size: 16px;
-}
-
-/* Input focus effect */
-input:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 4px rgba(0, 123, 255, 0.3);
-}
-
-/* Submit button */
-button[type="submit"] {
-  background-color: #007bff;
   color: white;
-  padding: 12px 20px;
+  background-color: #4CAF50;
   border: none;
-  border-radius: 6px;
-  font-size: 16px;
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-/* Button hover effect */
-button[type="submit"]:hover {
-  background-color: #0056b3;
+.upload-button:hover {
+  background-color: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .product-upload-container {
+    width: 80%;
+  }
+
+  h2 {
+    font-size: 20px;
+  }
+
+  .form-group input,
+  .form-group select {
+    font-size: 12px;
+  }
+
+  .upload-button {
+    font-size: 14px;
+  }
 }

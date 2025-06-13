@@ -1,113 +1,92 @@
-import React, { useState, useEffect } from 'react';
-import './AddCategory.css';
+import React, { useState } from 'react';
 import axios from 'axios';
 
 const AddCategory = () => {
   const [categoryName, setCategoryName] = useState('');
   const [description, setDescription] = useState('');
   const [imageFile, setImageFile] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [message, setMessage] = useState('');
 
-  const fetchCategories = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/api/categories');
-      setCategories(response.data);
-    } catch (error) {
-      console.error('Error fetching categories:', error);
-    }
+  const handleNameChange = (e) => {
+    setCategoryName(e.target.value);
   };
 
-  useEffect(() => {
-    fetchCategories();
-  }, []);
+  const handleDescriptionChange = (e) => {
+    setDescription(e.target.value);
+  };
+
+  const handleImageChange = (e) => {
+    setImageFile(e.target.files[0]);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!categoryName || !description || !imageFile) {
+      setMessage("Please provide category name, description, and image.");
+      return;
+    }
+
     const formData = new FormData();
-    formData.append('name', categoryName);
+    formData.append('categoryName', categoryName);
     formData.append('description', description);
-    formData.append('image', imageFile);
+    formData.append('file', imageFile);
 
     try {
-      await axios.post('http://localhost:8080/api/categories', formData, {
+      const response = await axios.post('http://localhost:8086/categories', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
-      alert('Category added successfully!');
+
+      setMessage(`Category "${response.data.categoryName}" added successfully.`);
       setCategoryName('');
       setDescription('');
       setImageFile(null);
-      fetchCategories();
     } catch (error) {
-      console.error('Error adding category:', error);
+      console.error(error);
+      setMessage("Error uploading category.");
     }
   };
 
   return (
-    <div className="category-container">
+    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
       <h2>Add Category</h2>
-      <form className="add-category-form" onSubmit={handleSubmit}>
-        <label>
-          Category Name:
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Category Name:</label>
           <input
             type="text"
             value={categoryName}
-            onChange={(e) => setCategoryName(e.target.value)}
-            placeholder="Enter category name"
+            onChange={handleNameChange}
             required
+            style={{ width: '100%', padding: '8px' }}
           />
-        </label>
-        <label>
-          Description:
+        </div>
+
+        <div style={{ marginTop: '10px' }}>
+          <label>Description:</label>
           <textarea
             value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter category description"
+            onChange={handleDescriptionChange}
             required
+            style={{ width: '100%', padding: '8px' }}
           />
-        </label>
-        <label>
-          Category Image:
+        </div>
+
+        <div style={{ marginTop: '10px' }}>
+          <label>Category Image:</label>
           <input
             type="file"
             accept="image/*"
-            onChange={(e) => setImageFile(e.target.files[0])}
+            onChange={handleImageChange}
             required
           />
-        </label>
-        <button type="submit">Add Category</button>
-      </form>
+        </div>
 
-      <table className="category-table">
-        <thead>
-          <tr>
-            <th>Category Name</th>
-            <th>Description</th>
-            <th>Category Image</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((cat) => (
-            <tr key={cat.id}>
-              <td>{cat.name}</td>
-              <td>{cat.description}</td>
-              <td>
-                <img
-                  src={`http://localhost:8080/uploads/${cat.imagePath}`}
-                  alt={cat.name}
-                  className="category-image"
-                />
-              </td>
-              <td>
-                <button>Delete</button>
-                <button>Edit</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+        <button type="submit" style={{ marginTop: '15px' }}>Upload Category</button>
+      </form>
+      {message && <p style={{ marginTop: '20px', color: 'green' }}>{message}</p>}
     </div>
   );
 };

@@ -1,46 +1,114 @@
-.view-orders-container {
-    width: 70%;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    font-family: Arial, sans-serif;
-  }
-  
-  .view-orders-container h2 {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  .orders-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
-    margin-top: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .orders-table th,
-  .orders-table td {
-    padding: 10px;
-    border: 1px solid #ddd;
-    text-align: center;
-  }
-  
-  .orders-table th {
-    background-color: #f4f4f4;
-    color: #333;
-  }
-  
-  .orders-table td select {
-    padding: 5px;
-    font-size: 14px;
-  }
-  .Update{
-    color:white;
-    font-size: 11px;
-    padding-left: 20px;
+/* ====== General Container Styling ====== */
+.delivery-assign-container {
+  padding: 30px;
+  max-width: 100%;
+  overflow-x: auto;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
+.delivery-assign-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 2rem;
+}
+
+/* ====== Table Styling for Desktop ====== */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+thead {
+  background-color: #4caf50;
+  color: white;
+}
+
+th, td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+  vertical-align: top;
+}
+
+ul {
+  padding-left: 20px;
+  margin: 0;
+}
+
+/* ====== Select and Button Styling ====== */
+select {
+  padding: 8px 10px;
+  font-size: 0.95rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.assign-btn {
+  padding: 8px 14px;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.assign-btn:hover:not(:disabled) {
+  background-color: #1976d2;
+}
+
+.assign-btn:disabled {
+  background-color: #bbb;
+  cursor: not-allowed;
+}
+
+/* ====== Responsive Styling for Mobile ====== */
+@media screen and (max-width: 768px) {
+  .delivery-assign-container {
+    padding: 20px 10px;
   }
+
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px;
+    background-color: #fff;
+  }
+
+  td {
+    padding: 10px 8px;
+    position: relative;
+    text-align: left;
+    border: none;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+  }
+
+  select, .assign-btn {
+    width: 100%;
+    margin-top: 8px;
+  }
+}

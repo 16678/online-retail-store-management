@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Headers.css";
+import logo from "./WhatsApp Image 2025-03-31 at 18.11.31_3db289b3.jpg"; // Update the path if needed
 
 const Headers = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -9,50 +10,88 @@ const Headers = () => {
 
   useEffect(() => {
     const storedCustomer = JSON.parse(localStorage.getItem("customer"));
-    setIsLoggedIn(!!storedCustomer); // Update login state based on user data
+    setIsLoggedIn(!!storedCustomer);
   }, []);
 
-  const handleSearch = () => {
-    navigate(`/search?query=${searchTerm}`);
+  const handleSearch = (e) => {
+    if (e) e.preventDefault();
+    const trimmedTerm = searchTerm.trim();
+    if (trimmedTerm !== "") {
+      navigate(`/search?q=${encodeURIComponent(trimmedTerm)}`);
+      setSearchTerm("");
+    }
   };
 
   return (
-    <div>
-      <header className="header">
-        <div className="logo">Sarat Online Retail Store</div>
+    <header className="header">
+      <div className="logo">
+        <Link to="/" className="logo-link">
+          <img src={logo} alt="Logo" className="header-logo" />
+        </Link>
+      </div>
 
-        <div className="search-input-wrapper">
-          <input
-            type="text"
-            placeholder="Search by category, sub-category, or title"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="search-input"
-          />
-          <button className="search-button" onClick={handleSearch}>
-            Search
+      <form
+        className="search-input-wrapper"
+        onSubmit={handleSearch}
+        role="search"
+        aria-label="Product Search Form"
+      >
+        <input
+          type="search"
+          placeholder="Search for Electronics,Cloths...
+"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-input"
+          aria-label="Search products"
+          autoComplete="off"
+        />
+        <button
+          type="submit"
+          className="search-button"
+          aria-label="Search button"
+          disabled={searchTerm.trim() === ""}
+        >
+          Search
+        </button>
+      </form>
+
+      <nav className="user-actions">
+        {isLoggedIn ? (
+          <button
+            className="profile-btn"
+            onClick={() => navigate("/profile")}
+            aria-label="Go to Profile"
+          >
+            👤 Profile
           </button>
-        </div>
+        ) : (
+          <button
+            className="profile-btn"
+            onClick={() => navigate("/login")}
+            aria-label="Login"
+          >
+            🔑 Login
+          </button>
+        )}
 
-        <div>
-          {isLoggedIn ? (
-            <span className="profile" onClick={() => navigate("/profile")}>
-              👤 Profile
-            </span>
-          ) : (
-            <span className="profile" onClick={() => navigate("/login")}>
-              🔑 Login
-            </span>
-          )}
-          <span className="profile" onClick={() => navigate("/cart")}>
-            🛒 Cart
-          </span>
-          <span className="profile" onClick={() => navigate("/adminLogin")}>
-            🔑 Admin
-          </span>
-        </div>
-      </header>
-    </div>
+        <button
+          className="profile-btn"
+          onClick={() => navigate("/cart")}
+          aria-label="View Cart"
+        >
+          🛒 Cart
+        </button>
+
+        <button
+          className="profile-btn"
+          onClick={() => navigate("/adminLogin")}
+          aria-label="Admin Login"
+        >
+          🔑 Admin
+        </button>
+      </nav>
+    </header>
   );
 };
 

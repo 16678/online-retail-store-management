@@ -1,0 +1,104 @@
+/* Layout container for side-by-side view */
+.admin-management-container {
+    display: flex; /* Use flexbox to display content side by side */
+    justify-content: space-between; /* Space out the sections */
+    gap: 20px; /* Add some space between the sections */
+    margin: auto;
+    padding: 20px;
+    width: 100%;
+  }
+  
+  .login-container {
+    width: 40%; /* Adjust the size of the login section */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  .admin-content-container {
+    width: 55%; /* Adjust the size of the admin content section */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: #f9f9f9;
+  }
+  
+  h2, h3 {
+    text-align: center;
+  }
+  
+  .admin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  .input-field {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .input-field label {
+    font-weight: bold;
+  }
+  
+  .input-field input {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-top: 5px;
+  }
+  
+  .submit-button {
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .submit-button:hover {
+    background-color: #45a049;
+  }
+  
+  .message {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 18px;
+    color: green;
+  }
+  
+  .admin-list {
+    margin-top: 20px;
+  }
+  
+  .admin-list ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .admin-item {
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+    border-radius: 5px;
+  }
+  
+  .edit-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .edit-button:hover {
+    background-color: #45a049;
+  }
+  

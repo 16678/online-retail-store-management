@@ -7,7 +7,9 @@
   height: 100px;
   box-sizing: border-box;
 }
-
+.user-actions{
+  padding-right: 200px;
+}
 /* Title styling */
 .product-list-title {
  

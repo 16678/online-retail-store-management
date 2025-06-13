@@ -1,102 +1,303 @@
-/* General container styling */
+/* Container */
 .view-products-container {
-  padding: 20px;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
 }
 
-/* Table styling */
+/* Headings */
+.view-products-container h2,
+.view-products-container h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #222;
+}
+
+/* Loading, Error, Success Messages */
+.loading,
+.error,
+.success {
+  text-align: center;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.loading {
+  color: #0c63e4;
+  background-color: #cfe2ff;
+  border: 1px solid #b6d4fe;
+}
+
+.error {
+  color: #842029;
+  background-color: #f8d7da;
+  border: 1px solid #f5c2c7;
+}
+
+.success {
+  color: #0f5132;
+  background-color: #d1e7dd;
+  border: 1px solid #badbcc;
+}
+
+/* Products Table */
 .products-table {
   width: 100%;
   border-collapse: collapse;
-  margin-top: 20px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  margin-bottom: 2rem;
+  background: #fff;
+  border-radius: 6px;
+  overflow: hidden;
 }
 
-.products-table th {
-  background-color: #4A90E2;
+.products-table thead {
+  background-color: #007bff;
   color: #fff;
-  padding: 12px;
-  text-align: left;
 }
 
+.products-table th,
 .products-table td {
-  padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
-  text-align: center;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: middle;
+  border-bottom: 1px solid #ddd;
+  font-size: 0.9rem;
 }
 
-.products-table tr:hover {
-  background-color: #eaf7ff;
+.products-table tbody tr:hover {
+  background-color: #f1f5ff;
+}
+
+.products-table th:last-child,
+.products-table td:last-child {
+  text-align: center;
+  min-width: 180px;
+}
+
+/* Product Images Cell */
+.product-images-cell {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  max-width: 200px;
 }
 
 .product-image {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 4px;
+  box-shadow: 0 0 3px rgba(0,0,0,0.15);
 }
 
-/* Action Buttons */
-.edit-button,
-.delete-button,
-.discount-button {
-  border: none;
-  color: #fff;
-  padding: 6px 12px;
-  border-radius: 5px;
+/* Buttons */
+button {
   cursor: pointer;
-  margin-right: 5px;
+  padding: 0.35rem 0.7rem;
+  margin: 0 0.15rem 0.15rem 0;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.85rem;
   transition: background-color 0.3s ease;
+  color: #fff;
+  background-color: #007bff;
+  box-shadow: 0 2px 5px rgba(0,123,255,0.3);
 }
 
-.edit-button {
-  background-color: #f39c12;
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
 }
 
-.edit-button:hover {
-  background-color: #e67e22;
+button:hover:not(:disabled) {
+  background-color: #0056b3;
 }
 
-.delete-button {
-  background-color: #e74c3c;
-}
-
-.delete-button:hover {
-  background-color: #c0392b;
-}
-
-.discount-button {
-  background-color: #2ecc71;
-}
-
-.discount-button:hover {
-  background-color: #27ae60;
-}
-
-/* Discount Input Styling */
+/* Discount Action Section */
 .discount-action {
+  margin-top: 0.3rem;
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 0.3rem;
 }
 
-.inline-discount-input {
-  margin-left: 8px;
-  padding: 6px 8px;
-  width: 60px;
-  border: 2px solid #2ecc71;
-  border-radius: 5px;
-  font-size: 14px;
-  outline: none;
+.discount-action input[type="number"] {
+  width: 50px;
+  padding: 0.25rem 0.4rem;
+  font-size: 0.85rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline-offset: 2px;
+  outline-color: #007bff;
+}
+
+/* Edit Form */
+.edit-form {
+  max-width: 600px;
+  margin: 0 auto 3rem auto;
+  padding: 1.5rem;
+  border-radius: 8px;
+  background-color: #fafafa;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.edit-form h3 {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #007bff;
+}
+
+.edit-form label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: #444;
+}
+
+.edit-form input[type="text"],
+.edit-form input[type="number"],
+.edit-form input[type="file"] {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  margin-top: 0.3rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   transition: border-color 0.3s ease;
 }
 
-.inline-discount-input:focus {
-  border-color: #27ae60;
+.edit-form input[type="text"]:focus,
+.edit-form input[type="number"]:focus,
+.edit-form input[type="file"]:focus {
+  border-color: #007bff;
+  outline: none;
 }
 
-/* Edit Modal Styling */
-.edit-modal {
+/* Image Previews in Edit Form */
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  justify-content: center;
+}
+
+.image-preview {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  background-color: #fff;
+}
+
+.selected-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-preview button {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background-color: rgba(255, 0, 0, 0.75);
+  padding: 0.15rem 0.4rem;
+  font-size: 0.75rem;
+  border-radius: 3px;
+  box-shadow: none;
+}
+
+.image-preview button:hover:not(:disabled) {
+  background-color: rgba(255, 0, 0, 1);
+}
+
+/* Edit Form Buttons */
+.edit-form > button {
+  width: 48%;
+  margin: 0.5rem 1% 0 1%;
+  background-color: #28a745;
+  box-shadow: 0 2px 5px rgba(40, 167, 69, 0.4);
+  color: white;
+  font-weight: 700;
+}
+
+.edit-form > button:last-child {
+  background-color: #dc3545;
+  box-shadow: 0 2px 5px rgba(220, 53, 69, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .products-table th,
+  .products-table td {
+    font-size: 0.8rem;
+    padding: 0.5rem 0.6rem;
+  }
+
+  .product-images-cell {
+    max-width: 140px;
+  }
+
+  .product-image {
+    width: 40px;
+    height: 40px;
+  }
+
+  .edit-form {
+    width: 90%;
+  }
+}
+
+@media (max-width: 600px) {
+  .products-table {
+    font-size: 0.75rem;
+  }
+
+  .products-table thead {
+    display: none;
+  }
+
+  .products-table tbody tr {
+    display: block;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 1rem;
+  }
+
+  .products-table tbody td {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 0;
+    border: none;
+    border-bottom: 1px solid #eee;
+  }
+
+  .products-table tbody td:last-child {
+    border-bottom: none;
+  }
+
+  .products-table tbody td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #555;
+    flex: 1;
+  }
+
+  .discount-action {
+    flex-wrap: wrap;
+  }
+}
+/* Modal overlay - full screen transparent background */
+.modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
@@ -104,56 +305,52 @@
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
+/* Modal content - centered box */
 .modal-content {
-  background-color: #fff;
+  background: white;
   padding: 20px;
-  border-radius: 10px;
-  width: 350px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
-  max-height: 80vh;
+  border-radius: 8px;
+  width: 400px;
+  max-height: 90vh;
   overflow-y: auto;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 }
 
-/* Modal Form Inputs */
-.modal-content input {
+/* Form labels & inputs spacing */
+.modal-content label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="file"] {
   width: 100%;
-  padding: 8px;
-  margin: 6px 0 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
+  padding: 6px;
+  margin-top: 4px;
+  box-sizing: border-box;
 }
 
-/* Modal Buttons */
-.modal-content button {
-  background-color: #3498db;
-  border: none;
-  color: white;
-  padding: 6px 12px;
-  margin-right: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.image-previews {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
 }
 
-.modal-content button:hover {
-  background-color: #2980b9;
+.image-preview {
+  position: relative;
 }
 
-/* Responsive Table - Optional */
-@media (max-width: 768px) {
-  .products-table th,
-  .products-table td {
-    padding: 8px;
-    font-size: 14px;
-  }
-
-  .modal-content {
-    width: 90%;
-  }
+.selected-image {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+ 
 }

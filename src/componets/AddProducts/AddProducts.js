@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import "./AddProducts.css"; // For styling
+import "./AddProducts.css";
 
-const AddProduct = () => {
+const UpdateProduct = ({ productId }) => {
   const [product, setProduct] = useState({
     title: "",
     description: "",
@@ -13,36 +13,50 @@ const AddProduct = () => {
     category: "",
   });
 
+  // Load product details by ID when component mounts
+  useEffect(() => {
+    if (!productId) return;
+
+    axios
+      .get(`http://localhost:8080/api/products/${productId}`)
+      .then((response) => {
+        setProduct(response.data);
+      })
+      .catch((error) => {
+        alert("Failed to fetch product details: " + error.message);
+      });
+  }, [productId]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduct((prev) => ({ ...prev, [name]: value }));
+
+    // For boolean select handling
+    if (name === "inStock") {
+      setProduct((prev) => ({
+        ...prev,
+        [name]: value === "true",
+      }));
+    } else {
+      setProduct((prev) => ({ ...prev, [name]: value }));
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     axios
-      .post("http://localhost:8080/api/products/add", product)
+      .put(`http://localhost:8080/api/products/${productId}`, product)
       .then((response) => {
-        alert("Product added successfully!");
-        setProduct({
-          title: "",
-          description: "",
-          thumbnailPath: "",
-          price: "",
-          inStock: true,
-          noOfReviews: 0,
-          category: "",
-        });
+        alert("Product updated successfully!");
       })
       .catch((error) => {
-        alert("Error adding product: " + error.message);
+        alert("Error updating product: " + error.message);
       });
   };
 
   return (
     <form className="add-product-form" onSubmit={handleSubmit}>
-      <h1>Add Product</h1>
+      <h1>Update Product</h1>
       <label>Title:</label>
       <input
         type="text"
@@ -75,16 +89,7 @@ const AddProduct = () => {
         required
       />
       <label>In Stock:</label>
-      <select
-        name="inStock"
-        value={product.inStock}
-        onChange={(e) =>
-          setProduct((prev) => ({
-            ...prev,
-            inStock: e.target.value === "true",
-          }))
-        }
-      >
+      <select name="inStock" value={product.inStock} onChange={handleChange}>
         <option value="true">Yes</option>
         <option value="false">No</option>
       </select>
@@ -96,9 +101,9 @@ const AddProduct = () => {
         onChange={handleChange}
         required
       />
-      <button type="submit">Add Product</button>
+      <button type="submit">Update Product</button>
     </form>
   );
 };
 
-export default AddProduct;
+export default UpdateProduct;

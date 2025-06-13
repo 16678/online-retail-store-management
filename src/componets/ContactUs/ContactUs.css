@@ -1,7 +1,7 @@
 .contact-container {
   max-width: 600px;
-  margin: 50px auto;
-  padding: 30px;
+  margin: 130px auto 50px;/* Increased top margin */
+  padding: 50px 30px;       /* Increased top padding */
   background: linear-gradient(to right, #fceabb, #f8b500);
   border-radius: 15px;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -62,7 +62,8 @@
 /* Responsive */
 @media (max-width: 480px) {
   .contact-container {
-    padding: 20px;
+    margin: 80px 20px 30px;
+    padding: 30px 20px;
   }
 
   .submit-btn {
