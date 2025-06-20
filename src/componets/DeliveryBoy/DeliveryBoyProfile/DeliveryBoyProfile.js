@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import './DeliveryBoyProfile.css';
+
 import {
   FaPhone,
   FaMapMarkerAlt,
@@ -14,6 +15,9 @@ import {
   FaDollarSign,
 } from "react-icons/fa";
 
+import Earnings from "../DeliveryEarnings/DeliveryEarnings";
+import OrderHistory from "../OrderDetails/OrderDetails";
+
 const DeliveryBoyProfile = () => {
   const [deliveryBoy, setDeliveryBoy] = useState(null);
   const [isOnline, setIsOnline] = useState(true);
@@ -21,58 +25,54 @@ const DeliveryBoyProfile = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Get deliveryBoyId from location state or localStorage fallback
-  const deliveryBoyId = location.state?.deliveryBoyId || localStorage.getItem('deliveryBoyId');
+  const deliveryBoyId = location.state?.deliveryBoyId || localStorage.getItem("deliveryBoyId");
 
   useEffect(() => {
     if (!deliveryBoyId) {
-      // If no ID, redirect to login page
-      navigate('/delivery-login');
+      navigate("/delivery-login");
       return;
     }
 
-    // Save deliveryBoyId to localStorage to persist on refresh
-    localStorage.setItem('deliveryBoyId', deliveryBoyId);
+    localStorage.setItem("deliveryBoyId", deliveryBoyId);
 
-    // Fetch delivery boy data
     const fetchDeliveryBoy = async () => {
       try {
-        const response = await axios.get(`http://localhost:8086/api/deliveryboys/${deliveryBoyId}`);
-        setDeliveryBoy(response.data);
-      } catch (error) {
-        console.error("Error fetching delivery boy data:", error);
+        const res = await axios.get(`http://localhost:8086/api/deliveryboys/${deliveryBoyId}`);
+        setDeliveryBoy(res.data);
+      } catch (err) {
+        console.error("Failed to load delivery boy:", err);
       }
     };
 
     fetchDeliveryBoy();
   }, [deliveryBoyId, navigate]);
 
-  // Toggle online/offline status
-  const toggleStatus = () => setIsOnline(!isOnline);
+  const formatImagePath = (path) => {
+    return path ? `http://localhost:8086/${path.replace(/\\/g, "/")}` : "https://i.pravatar.cc/150?img=67";
+  };
+
+  const toggleStatus = () => setIsOnline((prev) => !prev);
 
   if (!deliveryBoy) {
     return <div className="loading">Loading delivery boy details...</div>;
   }
 
-  const fullAddress = `${deliveryBoy.street || ''}, ${deliveryBoy.city || ''}, ${deliveryBoy.state || ''} - ${deliveryBoy.pincode || ''}`;
-
-  // Use deliveryBoy.imageUrl if available, otherwise fallback to placeholder
-  const profileImage = deliveryBoy.imageUrl 
-    ? deliveryBoy.imageUrl.startsWith('http') 
-      ? deliveryBoy.imageUrl // absolute URL from backend
-      : `http://localhost:8086/${deliveryBoy.imageUrl}` // relative path, adjust if needed
-    : "https://i.pravatar.cc/150?img=67";
+  const fullAddress = `${deliveryBoy.street || ""}, ${deliveryBoy.city || ""}, ${deliveryBoy.state || ""} - ${deliveryBoy.pincode || ""}`;
 
   return (
     <div className="profile-container">
       <div className="profile-card">
         <div className="profile-header">
-          <img src={profileImage} alt="Delivery Boy" className="profile-img" />
+          <img
+            src={formatImagePath(deliveryBoy.profilePicPath)}
+            alt="Delivery Boy"
+            className="profile-img"
+          />
           <h2>{deliveryBoy.firstName} {deliveryBoy.lastName}</h2>
           <p>ID: DB{deliveryBoy.id}</p>
         </div>
 
-        <div className="status-toggle" onClick={toggleStatus} style={{cursor: 'pointer'}}>
+        <div className="status-toggle" onClick={toggleStatus} style={{ cursor: "pointer" }}>
           {isOnline ? (
             <>
               <FaToggleOn className="toggle-icon online" /> Online
@@ -108,6 +108,9 @@ const DeliveryBoyProfile = () => {
           <p><FaEnvelope /> {deliveryBoy.email}</p>
           <p><FaMapMarkerAlt /> {fullAddress || "Not Available"}</p>
         </div>
+
+        <Earnings />
+        <OrderHistory />
 
         <div className="zone-info">
           <h3>Delivery Zones</h3>

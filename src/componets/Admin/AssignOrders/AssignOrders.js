@@ -61,9 +61,12 @@ const AssignOrders = () => {
             <div key={order.id} className="order-card">
               <h3>Order ID: {order.id}</h3>
 
+              <p><strong>Customer ID:</strong> {customer.customerId || "N/A"}</p>
               <p><strong>Customer Name:</strong> {customer.customerName || "N/A"}</p>
               <p><strong>Phone:</strong> {customer.phoneNumber || "N/A"}</p>
               <p><strong>Address:</strong> {customer.address || "N/A"}</p>
+
+              <p><strong>Delivery Location:</strong> {order.deliveryLocation || "N/A"}</p>
 
               <p><strong>Status:</strong> {order.status}</p>
               <p><strong>Total Amount:</strong> ₹{order.totalAmount?.toFixed(2) || "0.00"}</p>

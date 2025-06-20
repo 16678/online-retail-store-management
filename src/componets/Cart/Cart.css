@@ -204,6 +204,7 @@ button:hover:not(:disabled) {
 @media screen and (max-width: 767px) {
   .cart-title {
     font-size: 1.6rem;
+    padding-top: 200px;
   }
 
   .cart-table thead {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import "./Headers.css";
 import logo from "./WhatsApp Image 2025-03-31 at 18.11.31_3db289b3.jpg"; // Update the path if needed
-
+// import CurrentLocationMap from "../CurrentLocationMap/CurrentLocationMap";
 const Headers = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,7 +29,7 @@ const Headers = () => {
           <img src={logo} alt="Logo" className="header-logo" />
         </Link>
       </div>
-
+      
       <form
         className="search-input-wrapper"
         onSubmit={handleSearch}

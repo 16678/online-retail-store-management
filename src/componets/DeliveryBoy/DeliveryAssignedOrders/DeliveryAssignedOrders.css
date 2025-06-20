@@ -1,39 +1,47 @@
-/* Container for all orders */
+/* Reset margins and paddings globally */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Orders container */
 .orders-container {
   max-width: 1200px;
-  margin: 20px auto;
-  padding: 0 20px;
+  margin: 40px auto;
+  padding: 0 16px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* Heading */
-h2 {
+.orders-container h2 {
+  width: 100%;
   text-align: center;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
+  font-size: 1.8rem;
   color: #2c3e50;
 }
 
-/* Flex container to arrange order cards side by side */
-.orders-container > div.order-card {
-  display: inline-block;
-  vertical-align: top;
-  width: 30%; /* 3 cards per row with some gap */
-  margin: 0 1.5% 20px 1.5%;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgb(0 0 0 / 0.1);
-  padding: 18px 22px;
+/* Individual order card */
+.order-card {
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
   transition: box-shadow 0.3s ease;
-  cursor: default;
-  box-sizing: border-box;
+  flex: 1 1 calc(33.333% - 20px);
   min-width: 280px;
+  max-width: calc(33.333% - 20px);
 }
 
 .order-card:hover {
-  box-shadow: 0 8px 15px rgb(0 0 0 / 0.15);
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Header inside each order card */
+/* Card header */
 .order-header {
   display: flex;
   justify-content: space-between;
@@ -42,57 +50,59 @@ h2 {
 }
 
 .order-header h3 {
-  margin: 0;
   font-size: 1.1rem;
   color: #34495e;
 }
 
 /* Status badge */
 .order-status {
+  background-color: #2c3e50;
   color: white;
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-transform: uppercase;
 }
 
-/* Paragraph styles */
-p {
-  margin: 6px 0;
-  color: #555;
+/* Paragraphs inside cards */
+.order-card p {
   font-size: 0.9rem;
+  color: #555;
+  margin: 6px 0;
 }
 
-/* Details button */
+/* View details button */
 .details-btn {
+  display: inline-block;
   margin-top: 15px;
-  padding: 8px 15px;
+  padding: 8px 16px;
   background-color: #27ae60;
+  color: white;
   border: none;
   border-radius: 25px;
-  color: white;
+  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-size: 0.95rem;
 }
 
 .details-btn:hover {
   background-color: #219150;
 }
 
-/* Responsive adjustments for smaller screens */
+/* Responsive: 2 per row on tablets */
 @media (max-width: 900px) {
-  .orders-container > div.order-card {
-    width: 47%; /* 2 cards per row */
-    margin: 1.5% 1.5% 20px 1.5%;
+  .order-card {
+    flex: 1 1 calc(50% - 20px);
+    max-width: calc(50% - 20px);
   }
 }
 
+/* Responsive: 1 per row on small screens */
 @media (max-width: 600px) {
-  .orders-container > div.order-card {
-    width: 100%; /* 1 card per row */
-    margin: 10px 0;
+  .order-card {
+    flex: 1 1 100%;
+    max-width: 100%;
   }
 }

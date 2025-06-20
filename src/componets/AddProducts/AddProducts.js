@@ -4,16 +4,24 @@ import "./AddProducts.css";
 
 const UpdateProduct = ({ productId }) => {
   const [product, setProduct] = useState({
-    title: "",
-    description: "",
-    thumbnailPath: "",
-    price: "",
-    inStock: true,
-    noOfReviews: 0,
-    category: "",
+    productName: "",
+    brand: "",
+    topCategory: "",
+    secondCategory: "",
+    thirdCategory: "",
+    variants: [
+      {
+        size: "",
+        price: "",
+        discountedPrice: "",
+        discountPercentage: "",
+        stock: "",
+        images: [],
+      },
+    ],
   });
 
-  // Load product details by ID when component mounts
+  // Load product details by ID
   useEffect(() => {
     if (!productId) return;
 
@@ -27,80 +35,161 @@ const UpdateProduct = ({ productId }) => {
       });
   }, [productId]);
 
-  const handleChange = (e) => {
+  const handleProductChange = (e) => {
     const { name, value } = e.target;
-
-    // For boolean select handling
-    if (name === "inStock") {
-      setProduct((prev) => ({
-        ...prev,
-        [name]: value === "true",
-      }));
-    } else {
-      setProduct((prev) => ({ ...prev, [name]: value }));
-    }
+    setProduct((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleVariantChange = (index, e) => {
+    const { name, value, files } = e.target;
+    const newVariants = [...product.variants];
+    if (name === "images") {
+      newVariants[index][name] = Array.from(files);
+    } else {
+      newVariants[index][name] = value;
+    }
+    setProduct((prev) => ({ ...prev, variants: newVariants }));
+  };
+
+  const addVariant = () => {
+    setProduct((prev) => ({
+      ...prev,
+      variants: [
+        ...prev.variants,
+        {
+          size: "",
+          price: "",
+          discountedPrice: "",
+          discountPercentage: "",
+          stock: "",
+          images: [],
+        },
+      ],
+    }));
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    axios
-      .put(`http://localhost:8080/api/products/${productId}`, product)
-      .then((response) => {
-        alert("Product updated successfully!");
-      })
-      .catch((error) => {
-        alert("Error updating product: " + error.message);
-      });
+    // OPTIONAL: handle image upload logic separately and replace images with URLs
+
+    try {
+      await axios.put(`http://localhost:8080/api/products/${productId}`, product);
+      alert("Product updated successfully!");
+    } catch (error) {
+      alert("Error updating product: " + error.message);
+    }
   };
 
   return (
     <form className="add-product-form" onSubmit={handleSubmit}>
       <h1>Update Product</h1>
-      <label>Title:</label>
+
+      <label>Product Name:</label>
       <input
         type="text"
-        name="title"
-        value={product.title}
-        onChange={handleChange}
+        name="productName"
+        value={product.productName}
+        onChange={handleProductChange}
         required
       />
-      <label>Description:</label>
-      <textarea
-        name="description"
-        value={product.description}
-        onChange={handleChange}
-        required
-      />
-      <label>Thumbnail Path:</label>
+
+      <label>Brand:</label>
       <input
         type="text"
-        name="thumbnailPath"
-        value={product.thumbnailPath}
-        onChange={handleChange}
+        name="brand"
+        value={product.brand}
+        onChange={handleProductChange}
         required
       />
-      <label>Price:</label>
-      <input
-        type="number"
-        name="price"
-        value={product.price}
-        onChange={handleChange}
-        required
-      />
-      <label>In Stock:</label>
-      <select name="inStock" value={product.inStock} onChange={handleChange}>
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-      <label>Category:</label>
+
+      <label>Top Category:</label>
       <input
         type="text"
-        name="category"
-        value={product.category}
-        onChange={handleChange}
+        name="topCategory"
+        value={product.topCategory}
+        onChange={handleProductChange}
         required
       />
+
+      <label>Second Category:</label>
+      <input
+        type="text"
+        name="secondCategory"
+        value={product.secondCategory}
+        onChange={handleProductChange}
+      />
+
+      <label>Third Category:</label>
+      <input
+        type="text"
+        name="thirdCategory"
+        value={product.thirdCategory}
+        onChange={handleProductChange}
+      />
+
+      <hr />
+      <h2>Variants</h2>
+
+      {product.variants.map((variant, index) => (
+        <div key={index} className="variant-block">
+          <label>Size:</label>
+          <input
+            type="text"
+            name="size"
+            value={variant.size}
+            onChange={(e) => handleVariantChange(index, e)}
+            required
+          />
+
+          <label>Price:</label>
+          <input
+            type="number"
+            name="price"
+            value={variant.price}
+            onChange={(e) => handleVariantChange(index, e)}
+            required
+          />
+
+          <label>Discounted Price:</label>
+          <input
+            type="number"
+            name="discountedPrice"
+            value={variant.discountedPrice}
+            onChange={(e) => handleVariantChange(index, e)}
+          />
+
+          <label>Discount Percentage:</label>
+          <input
+            type="number"
+            name="discountPercentage"
+            value={variant.discountPercentage}
+            onChange={(e) => handleVariantChange(index, e)}
+          />
+
+          <label>Stock:</label>
+          <input
+            type="number"
+            name="stock"
+            value={variant.stock}
+            onChange={(e) => handleVariantChange(index, e)}
+            required
+          />
+
+          <label>Images:</label>
+          <input
+            type="file"
+            name="images"
+            multiple
+            onChange={(e) => handleVariantChange(index, e)}
+          />
+        </div>
+      ))}
+
+      <button type="button" onClick={addVariant}>
+        ➕ Add Variant
+      </button>
+
       <button type="submit">Update Product</button>
     </form>
   );

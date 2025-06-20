@@ -19,6 +19,7 @@ import ProductManagement from "./componets/Admin/ProductManagement";
 import AdminLogin from "./componets/AdminLogin/AdminLogin";
 import ImageUploader from "./componets/ImageUploader/ImageUploader";
 import ForgotPassword from "./componets/ForgotPassword/ForgotPassword";
+import CurrentLocationMap from "./componets/CurrentLocationMap/CurrentLocationMap";
 // Admin importing 
 import Navbar from "./componets/Admin/Navbar/Navbar";
 import DeliveryDashboard from "./componets/Admin/AdminDeliveryDashboard/DeliveryDashboard.js";
@@ -125,10 +126,12 @@ function App() {
                 <Headers />
                 <MainMenu />
                 <Home />
+                <CurrentLocationMap/>
                 <Footer />
               </>
             }
           />
+          
            <Route
             path="/sample"
             element={
@@ -182,7 +185,12 @@ function App() {
             }
           />
           {/* ProductDetails */}
-      <Route path="/product/:productId" element={<ProductDetails />} />
+      <Route path="/product/:productId" element={
+        <>  
+                <ProductDetails />
+                  <Footer />
+         </>
+      } />
           {/* Add Products */}
           <Route
             path="/add-products"

@@ -6,7 +6,7 @@ import "./OrderDetails.css";
 const DeliveredOrders = () => {
   const location = useLocation();
 
-  // Step 1: Get deliveryBoyId from state or localStorage
+  // Get deliveryBoyId from location state or localStorage
   const deliveryBoyId = location.state?.deliveryBoyId || localStorage.getItem("deliveryBoyId");
 
   const [orders, setOrders] = useState([]);
@@ -14,7 +14,7 @@ const DeliveredOrders = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Step 2: Fetch delivery boy details (if needed)
+  // Fetch delivery boy details
   useEffect(() => {
     if (!deliveryBoyId) {
       setError("Delivery boy ID not found.");
@@ -30,13 +30,14 @@ const DeliveredOrders = () => {
         setDeliveryBoy(response.data);
       } catch (err) {
         console.error("Error fetching delivery boy details:", err);
+        setError("Failed to fetch delivery boy details.");
       }
     };
 
     fetchDeliveryBoy();
   }, [deliveryBoyId]);
 
-  // Step 3: Fetch delivered orders
+  // Fetch delivered orders
   useEffect(() => {
     if (!deliveryBoyId) return;
 
@@ -70,26 +71,26 @@ const DeliveredOrders = () => {
       {orders.map((order) => (
         <div key={order.id} className="order-card">
           <p><strong>Order ID:</strong> #{order.id}</p>
-       
           <p><strong>Total:</strong> ₹{order.totalAmount}</p>
           <p><strong>Payment:</strong> {order.paymentMethod}</p>
           <p><strong>Date:</strong> {new Date(order.orderDate).toLocaleString()}</p>
-          <p><strong>Customer:</strong> {order.customer.customerName}</p>
-           <p><strong>Status:</strong>{" "}
-             <span className={`status-badge ${order.status.toLowerCase()}`}>
-                {order.status}
-             </span>
-            </p>
+          <p><strong>Customer:</strong> {order.customer?.customerName || "Unknown Customer"}</p>
+           <p><strong>Phone:</strong> {order.customer?.phoneNumber ?? 'N/A'}</p>
+          <p>
+            <strong>Status:</strong>{" "}
+            <span className={`status-badge ${order.status?.toLowerCase()}`}>
+              {order.status}
+            </span>
+          </p>
           <div className="items">
             <strong>Items:</strong>
             <ul>
-              {order.items.map((item) => (
+              {order.items?.map((item) => (
                 <li key={item.id}>
                   {item.productName || `Product #${item.productId}`} - ₹{item.price} x {item.quantity}
                 </li>
-              ))}
+              )) || <li>No items found</li>}
             </ul>
-           
           </div>
         </div>
       ))}

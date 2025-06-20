@@ -1,60 +1,57 @@
-import React from "react";
-import "./DeliveryEarnings.css";
-import { FaRupeeSign } from "react-icons/fa";
-import { BsCalendarDate } from "react-icons/bs";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./DeliveryEarnings.css"; // Still using same styles
 
-const DeliveryEarnings = () => {
-  const earningsData = {
-    daily: 420,
-    weekly: 2780,
-    monthly: 11400,
-    completedDeliveries: 56,
-    tips: 350,
-    paymentStatus: "Paid",
-    lastPaymentDate: "12 June 2025",
+const API_URL = "http://localhost:8086/api/orders/delivered";
+
+const DeliveredOrders = () => {
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchDeliveredOrders = async () => {
+    try {
+      const response = await axios.get(API_URL);
+      const data = response.data || [];
+      setOrders(data);
+    } catch (err) {
+      console.error("Error fetching delivered orders:", err);
+      setError("Failed to load delivered orders.");
+    } finally {
+      setLoading(false);
+    }
   };
 
+  useEffect(() => {
+    fetchDeliveredOrders();
+  }, []);
+
+  if (loading) return <div>Loading delivered orders...</div>;
+  if (error) return <div>{error}</div>;
+  if (orders.length === 0) return <div>No delivered orders found.</div>;
+
   return (
-    <div className="earnings-container">
-      <h2 className="earnings-header">Earnings Summary</h2>
+    <div className="delivered-orders-container">
+      <h2>Delivered Orders</h2>
+      <div className="delivered-orders-list">
+        {orders.map((order) => {
+          const customerName = order?.customer?.customerName || "Unknown Customer";
+          const productName = order?.product?.productName || "Unknown Product";
+          const quantity = order?.quantity ?? "N/A";
+          const deliveryDate = order?.deliveryDate || "N/A";
 
-      <div className="earnings-cards">
-        <div className="earnings-card">
-          <p>Today's Earnings</p>
-          <h3><FaRupeeSign />{earningsData.daily}</h3>
-        </div>
-        <div className="earnings-card">
-          <p>This Week</p>
-          <h3><FaRupeeSign />{earningsData.weekly}</h3>
-        </div>
-        <div className="earnings-card">
-          <p>This Month</p>
-          <h3><FaRupeeSign />{earningsData.monthly}</h3>
-        </div>
-      </div>
-
-      <div className="earnings-info">
-        <div className="info-item">
-          <p>Completed Deliveries</p>
-          <span>{earningsData.completedDeliveries}</span>
-        </div>
-        <div className="info-item">
-          <p>Total Tips</p>
-          <span><FaRupeeSign />{earningsData.tips}</span>
-        </div>
-        <div className="info-item">
-          <p>Payment Status</p>
-          <span className={earningsData.paymentStatus === "Paid" ? "paid" : "unpaid"}>
-            {earningsData.paymentStatus}
-          </span>
-        </div>
-        <div className="info-item">
-          <p>Last Payment</p>
-          <span><BsCalendarDate /> {earningsData.lastPaymentDate}</span>
-        </div>
+          return (
+            <div key={order?.orderId || Math.random()} className="order-card">
+              <p><strong>Customer:</strong> {customerName}</p>
+              <p><strong>Product:</strong> {productName}</p>
+              <p><strong>Quantity:</strong> {quantity}</p>
+              <p><strong>Delivered On:</strong> {deliveryDate}</p>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
 };
 
-export default DeliveryEarnings;
+export default DeliveredOrders;

@@ -1,419 +1,294 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import useCustomerAddress from "../useCustomerAddress/useCustomerAddress";
 import "./Cart.css";
 
+const API_BASE = "http://localhost:8086/api";
+const IMAGE_BASE = "http://localhost:8086/images";
+const DELIVERY_CHARGE = 30;
+const HANDLING_CHARGE = 4;
+const SMALL_CART_CHARGE = 20;
+
 const Cart = () => {
+  const [customerId, setCustomerId] = useState(null);
+  const [customerName, setCustomerName] = useState("");
   const [cartItems, setCartItems] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [paymentMethod, setPaymentMethod] = useState("COD");
-  const [showPaymentModal, setShowPaymentModal] = useState(false);
-  const [tipAmount, setTipAmount] = useState(0);
-
-  // New states for addresses
-  const [addresses, setAddresses] = useState([]);
   const [selectedAddressId, setSelectedAddressId] = useState(null);
-  const [showAddAddressForm, setShowAddAddressForm] = useState(false);
-  const [newAddress, setNewAddress] = useState({
-    name: "",
-    phone: "",
-    street: "",
-    city: "",
-    state: "",
-    pinCode: "",
-  });
+  const [paymentMethod, setPaymentMethod] = useState("COD");
+  const [tipAmount, setTipAmount] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [confirmedAddress, setConfirmedAddress] = useState(null);
 
-  const DELIVERY_CHARGE_FIXED = 30;
-  const HANDLING_CHARGE = 4;
-  const SMALL_CART_CHARGE = 20;
+  const {
+    addresses,
+    newAddress,
+    setNewAddress,
+    handleAddAddress,
+    handleEditAddress,
+    handleSaveAddress,
+    setAddresses,
+  } = useCustomerAddress({ customerId });
 
-  const customerId = localStorage.getItem("customerId");
-  const getCartStorageKey = () => `cart_${customerId}`;
+  // Fetch customer from localStorage
+  useEffect(() => {
+    const customerData = localStorage.getItem("customer");
+    if (customerData) {
+      const customer = JSON.parse(customerData);
+      setCustomerId(customer.customerId);
+      setCustomerName(customer.customerName);
+    } else {
+      alert("Please log in to view your cart.");
+    }
+  }, []);
 
-  // Sync cart with local storage
-  const syncLocalStorageCart = (items) => {
-    const cart = items.map(({ product, quantity }) => ({
-      ...product,
-      quantity,
-    }));
-    localStorage.setItem(getCartStorageKey(), JSON.stringify(cart));
+  const getCartKey = () => `cart_${customerId}`;
+
+  const syncCartToStorage = (items) => {
+    const simplifiedCart = items.map(({ product, quantity }) => ({ ...product, quantity }));
+    localStorage.setItem(getCartKey(), JSON.stringify(simplifiedCart));
     window.dispatchEvent(new Event("cartUpdated"));
   };
 
-  // Fetch cart items
   const fetchCartItems = async () => {
     if (!customerId) return;
-    setLoading(true);
     try {
-      const { data } = await axios.get(`http://localhost:8086/api/cart/${customerId}`);
-      setCartItems(data);
-      syncLocalStorageCart(data);
-    } catch (error) {
-      console.error("Failed to fetch cart items:", error);
+      setLoading(true);
+      const res = await axios.get(`${API_BASE}/cart/${customerId}`);
+      setCartItems(res.data);
+      syncCartToStorage(res.data);
+    } catch (err) {
+      console.error("Error fetching cart:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  // Fetch saved addresses from profile API
-  const fetchAddresses = async () => {
-    if (!customerId) return;
-    try {
-      const { data } = await axios.get(`http://localhost:8086/api/profile/addresses/${customerId}`);
-      setAddresses(data);
-      if (data.length > 0) setSelectedAddressId(data[0].id); // Select first address by default
-    } catch (error) {
-      console.error("Failed to fetch addresses:", error);
-    }
-  };
-
   useEffect(() => {
     fetchCartItems();
-    fetchAddresses();
   }, [customerId]);
 
-  // Remove item from cart
-  const handleRemoveFromCart = async (cartItemId) => {
+  useEffect(() => {
+    if (addresses.length && !selectedAddressId) {
+      setSelectedAddressId(addresses[0].id);
+    }
+  }, [addresses, selectedAddressId]);
+
+  const updateQuantity = async (productId, delta) => {
     try {
-      await axios.delete(`http://localhost:8086/api/cart/delete/${cartItemId}`);
+      await axios.post(`${API_BASE}/cart/add`, null, {
+        params: { customerId, productId, quantity: delta },
+      });
       fetchCartItems();
-    } catch (error) {
-      console.error("Failed to remove item:", error);
-      alert("Failed to remove item from cart.");
+    } catch (err) {
+      console.error("Failed to update quantity", err);
     }
   };
 
-  // Quantity update
-  const updateQuantity = async (productId, change) => {
+  const removeItem = async (cartItemId) => {
     try {
-      await axios.post(
-        `http://localhost:8086/api/cart/add`,
-        null,
-        { params: { customerId, productId, quantity: change } }
-      );
+      await axios.delete(`${API_BASE}/cart/delete/${cartItemId}`);
       fetchCartItems();
-    } catch (error) {
-      console.error("Error updating quantity:", error);
-      alert("Failed to update quantity.");
+    } catch (err) {
+      console.error("Failed to remove item", err);
     }
   };
-
-  const incrementQuantity = (productId) => updateQuantity(productId, 1);
-  const decrementQuantity = (productId) => updateQuantity(productId, -1);
-
-  // Calculate totals
-  const calculateItemTotal = () =>
-    cartItems.reduce((total, item) => total + item.product.price * item.quantity, 0);
 
   const calculateCharges = () => {
-    const itemTotal = calculateItemTotal();
+    const itemTotal = cartItems.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+    const delivery = itemTotal > 200 ? 0 : DELIVERY_CHARGE;
+    const smallCart = itemTotal < 100 ? SMALL_CART_CHARGE : 0;
+    const grandTotal = itemTotal + delivery + HANDLING_CHARGE + smallCart + tipAmount;
 
-    const delivery = itemTotal > 200 ? 0 : DELIVERY_CHARGE_FIXED;
-    const smallCartCharge = itemTotal < 100 ? SMALL_CART_CHARGE : 0;
-
-    return {
-      itemTotal,
-      delivery,
-      handling: HANDLING_CHARGE,
-      smallCart: smallCartCharge,
-      grandTotal: itemTotal + delivery + HANDLING_CHARGE + smallCartCharge + tipAmount,
-    };
+    return { itemTotal, delivery, smallCart, grandTotal };
   };
 
-  // Handle input changes in Add Address form
-  const handleNewAddressChange = (e) => {
-    const { name, value } = e.target;
-    setNewAddress((prev) => ({ ...prev, [name]: value }));
-  };
-
-  // Submit new address to backend
-  const handleAddAddress = async () => {
-    // Simple validation
-    if (
-      !newAddress.name.trim() ||
-      !newAddress.phone.trim() ||
-      !newAddress.street.trim() ||
-      !newAddress.city.trim() ||
-      !newAddress.state.trim() ||
-      !newAddress.pinCode.trim()
-    ) {
-      alert("Please fill all address fields.");
-      return;
-    }
-
-    try {
-      const response = await axios.post(`http://localhost:8086/api/profile/address/add`, {
-        customerId,
-        ...newAddress,
-      });
-
-      if (response.status === 200 || response.status === 201) {
-        alert("Address added successfully!");
-        setShowAddAddressForm(false);
-        setNewAddress({ name: "", phone: "", street: "", city: "", state: "", pinCode: "" });
-        fetchAddresses();
-      } else {
-        alert("Failed to add address.");
-      }
-    } catch (error) {
-      console.error("Error adding address:", error);
-      alert("Failed to add address.");
-    }
-  };
-
-  // Confirm order with selected address
   const handleConfirmPayment = async () => {
-    const selectedAddress = addresses.find(addr => addr.id === selectedAddressId);
-
-    if (!selectedAddress) {
-      alert("Please select or add a delivery address.");
-      return;
-    }
+    const address = addresses.find((a) => a.id === selectedAddressId);
+    if (!address) return alert("Please select an address.");
+    if (!customerId || !customerName) return alert("Customer info missing.");
 
     const { grandTotal } = calculateCharges();
 
-    // Construct delivery location string
-    const deliveryLocation = `${selectedAddress.name}, ${selectedAddress.street}, ${selectedAddress.city}, ${selectedAddress.state} - ${selectedAddress.pinCode}`;
-
-    const orderData = {
+    const orderPayload = {
       customerId,
+      customerName,
+      deliveryLocation: address.location,
       paymentMethod,
       totalAmount: grandTotal,
-      deliveryLocation,
       items: cartItems.map(({ product, quantity }) => ({
         productId: product.productId || product.id,
-        productName: product.productName || "Unknown",
+        productName: product.productName,
         quantity,
         price: product.price,
       })),
     };
 
     try {
-      const response = await axios.post('http://localhost:8086/api/orders/place', orderData);
-
-      if (response.status === 200 || response.status === 201) {
-        alert(`✅ Order placed successfully using ${paymentMethod}\n💰 Total: ₹${grandTotal.toFixed(2)}`);
-
-        await Promise.all(
-          cartItems.map(({ id }) =>
-            axios.delete(`http://localhost:8086/api/cart/delete/${id}`)
-          )
-        );
-
-        setCartItems([]);
-        localStorage.removeItem(getCartStorageKey());
-        window.dispatchEvent(new Event("cartUpdated"));
-        setShowPaymentModal(false);
-      } else {
-        alert("Failed to place order. Please try again.");
+      await axios.post(`${API_BASE}/orders/place`, orderPayload);
+      alert(`✅ Order placed via ${paymentMethod}`);
+      for (const item of cartItems) {
+        await axios.delete(`${API_BASE}/cart/delete/${item.id}`);
       }
-    } catch (error) {
-      console.error("Order placement failed:", error);
-      alert("Failed to place order. Please try again.");
+      setCartItems([]);
+      localStorage.removeItem(getCartKey());
+      window.dispatchEvent(new Event("cartUpdated"));
+      setConfirmedAddress(address.location);
+      setShowPaymentModal(false);
+    } catch (err) {
+      console.error("Order failed:", err);
+      alert("❌ Order placement failed");
     }
   };
 
-  if (loading) return <p>Loading your cart...</p>;
-  if (!cartItems.length) return <p className="empty-cart-message">🛒 Your cart is empty!</p>;
+  const { itemTotal, delivery, smallCart, grandTotal } = calculateCharges();
 
-  const { itemTotal, delivery, handling, smallCart, grandTotal } = calculateCharges();
+  if (loading) return <p>Loading cart...</p>;
+  if (!cartItems.length) return <p className="empty-cart-message">🛒 Your cart is empty!</p>;
 
   return (
     <div className="cart-container">
       <h1 className="cart-title">🛍️ Your Cart</h1>
 
-      {/* Cart Table */}
-      <div className="cart-table-container">
-        <table className="cart-table">
-          <thead>
-            <tr>
-              <th>Image</th>
-              <th>Product</th>
-              <th>Price</th>
-              <th>Quantity</th>
-              <th>Total</th>
-              <th>Action</th>
+      <table className="cart-table">
+        <thead>
+          <tr>
+            <th>Image</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {cartItems.map(({ id, product, quantity }) => (
+            <tr key={id}>
+              <td>
+                {product.imagePath1 ? (
+                  <img
+                    src={`${IMAGE_BASE}/${product.imagePath1}`}
+                    alt={product.productName}
+                    className="product-img"
+                  />
+                ) : (
+                  "No Image"
+                )}
+              </td>
+              <td>{product.productName}</td>
+              <td>₹{product.price.toFixed(2)}</td>
+              <td>
+                <button onClick={() => updateQuantity(product.id, -1)} disabled={quantity <= 1}>-</button>
+                <span>{quantity}</span>
+                <button onClick={() => updateQuantity(product.id, 1)}>+</button>
+              </td>
+              <td>₹{(product.price * quantity).toFixed(2)}</td>
+              <td>
+                <button onClick={() => removeItem(id)}>❌</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {cartItems.map(({ id, product, quantity }) => {
-              const productId = product.productId || product.id;
-              const itemTotal = (product.price * quantity).toFixed(2);
+          ))}
+        </tbody>
+      </table>
 
-              return (
-                <tr key={id}>
-                  <td>
-                    {product.imagePath1 ? (
-                      <img
-                        src={`http://localhost:8086/images/${product.imagePath1}`}
-                        alt={product.productName}
-                        className="product-img"
-                      />
-                    ) : (
-                      "No Image"
-                    )}
-                  </td>
-                  <td>{product.productName}</td>
-                  <td>₹{Math.round(product.price)}</td>
-                  <td>
-                    <button onClick={() => decrementQuantity(productId)} disabled={quantity <= 1}>-</button>
-                    <span className="mx-2">{quantity}</span>
-                    <button onClick={() => incrementQuantity(productId)}>+</button>
-                  </td>
-                  <td>₹{itemTotal}</td>
-                  <td>
-                    <button onClick={() => handleRemoveFromCart(id)}>❌ Remove</button>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Bill Summary */}
       <div className="bill-section">
         <h3>🧾 Bill Details</h3>
         <p>Items Total: ₹{itemTotal.toFixed(2)}</p>
-        <p>Delivery Charge: ₹{delivery}</p>
-        <p>Handling Charge: ₹{handling}</p>
-        {smallCart > 0 && <p>Small Cart Charge: ₹{smallCart}</p>}
-        <p>Tip for Delivery Partner: ₹{tipAmount}</p>
+        <p>Delivery: ₹{delivery}</p>
+        <p>Handling: ₹{HANDLING_CHARGE}</p>
+        {smallCart > 0 && <p>Small Cart Fee: ₹{smallCart}</p>}
+        <p>Tip: ₹{tipAmount}</p>
         <h3>Total: ₹{grandTotal.toFixed(2)}</h3>
 
         <div className="tip-section">
-          <label>Add a tip:</label>
-          {[20, 30, 50].map((amount) => (
-            <button key={amount} onClick={() => setTipAmount(amount)}>
-              ₹{amount}
-            </button>
+          <label>Tip your delivery partner:</label>
+          {[20, 30, 50].map((amt) => (
+            <button key={amt} onClick={() => setTipAmount(amt)}>₹{amt}</button>
           ))}
           <input
             type="number"
             placeholder="Custom"
-            min="0"
-            onChange={(e) => setTipAmount(Number(e.target.value))}
+            value={tipAmount}
+            onChange={(e) => setTipAmount(Number(e.target.value) || 0)}
           />
         </div>
       </div>
+
+      {confirmedAddress && (
+        <div className="confirmed-address">
+          <h4>📍 Delivery Address:</h4>
+          <p>{confirmedAddress}</p>
+        </div>
+      )}
 
       <button className="checkout-button" onClick={() => setShowPaymentModal(true)}>
         🚀 Place Order
       </button>
 
-      {/* Payment Modal */}
       {showPaymentModal && (
         <div className="modal-overlay">
           <div className="modal-content">
             <h3>Select Payment Method</h3>
-            <div className="payment-options">
-              {["COD", "UPI", "CARD"].map((method) => (
-                <label key={method}>
+            {["COD", "UPI", "CARD"].map((method) => (
+              <label key={method}>
+                <input
+                  type="radio"
+                  value={method}
+                  checked={paymentMethod === method}
+                  onChange={(e) => setPaymentMethod(e.target.value)}
+                />
+                {method}
+              </label>
+            ))}
+
+            <h4>📍 Delivery Address</h4>
+            {addresses.length === 0 ? (
+              <p style={{ fontStyle: "italic", color: "gray" }}>No address found. Please add one.</p>
+            ) : (
+              addresses.map(({ id, location, isEditing, updatedLocation }) => (
+                <div key={id} className="profile-address-item">
                   <input
                     type="radio"
-                    name="payment"
-                    value={method}
-                    checked={paymentMethod === method}
-                    onChange={(e) => setPaymentMethod(e.target.value)}
+                    name="address"
+                    checked={selectedAddressId === id}
+                    onChange={() => setSelectedAddressId(id)}
                   />
-                  {method === "COD" && "Cash on Delivery"}
-                  {method === "UPI" && "UPI / PhonePe / Google Pay"}
-                  {method === "CARD" && "Credit / Debit Card"}
-                </label>
-              ))}
+                  {isEditing ? (
+                    <>
+                      <input
+                        value={updatedLocation}
+                        onChange={(e) =>
+                          setAddresses((prev) =>
+                            prev.map((addr) =>
+                              addr.id === id ? { ...addr, updatedLocation: e.target.value } : addr
+                            )
+                          )
+                        }
+                      />
+                      <button onClick={() => handleSaveAddress(id)}>Save</button>
+                    </>
+                  ) : (
+                    <>
+                      <span>{location}</span>
+                      <button onClick={() => handleEditAddress(id)}>Edit</button>
+                    </>
+                  )}
+                </div>
+              ))
+            )}
+
+            <div className="new-address">
+              <input
+                placeholder="New address"
+                value={newAddress}
+                onChange={(e) => setNewAddress(e.target.value)}
+              />
+              <button onClick={handleAddAddress}>Add</button>
             </div>
 
-            {/* Address selection */}
-            <div style={{ marginTop: "1rem" }}>
-              <h4>Select Delivery Address:</h4>
-              {addresses.length === 0 && <p>No saved addresses.</p>}
-
-              {addresses.map(addr => (
-                <div key={addr.id} style={{ marginBottom: "0.5rem" }}>
-                  <input
-                    type="radio"
-                    id={`addr-${addr.id}`}
-                    name="selectedAddress"
-                    value={addr.id}
-                    checked={selectedAddressId === addr.id}
-                    onChange={() => setSelectedAddressId(addr.id)}
-                  />
-                  <label htmlFor={`addr-${addr.id}`}>
-                    {addr.name}, {addr.street}, {addr.city}, {addr.state} - {addr.pinCode}, 📞 {addr.phone}
-                  </label>
-                </div>
-              ))}
-
-              <button
-                style={{ marginTop: "1rem" }}
-                onClick={() => setShowAddAddressForm((prev) => !prev)}
-              >
-                {showAddAddressForm ? "Cancel Adding Address" : "Add New Address"}
-              </button>
-
-              {showAddAddressForm && (
-                <div className="add-address-form" style={{ marginTop: "1rem" }}>
-                  <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    value={newAddress.name}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Phone"
-                    value={newAddress.phone}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="street"
-                    placeholder="Street Address"
-                    value={newAddress.street}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="city"
-                    placeholder="City"
-                    value={newAddress.city}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="state"
-                    placeholder="State"
-                    value={newAddress.state}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                  <input
-                    type="text"
-                    name="pinCode"
-                    placeholder="Pin Code"
-                    value={newAddress.pinCode}
-                    onChange={handleNewAddressChange}
-                    required
-                  />
-                  <button onClick={handleAddAddress} style={{ marginTop: "0.5rem" }}>
-                    Save Address
-                  </button>
-                </div>
-              )}
-            </div>
-
-            <div className="modal-buttons" style={{ marginTop: "1rem" }}>
-              <button className="checkout-button" onClick={handleConfirmPayment}>
-                Confirm
-              </button>
-              <button className="cancel-button" onClick={() => setShowPaymentModal(false)}>
-                Cancel
-              </button>
+            <div className="modal-buttons">
+              <button onClick={handleConfirmPayment}>Confirm</button>
+              <button onClick={() => setShowPaymentModal(false)}>Cancel</button>
             </div>
           </div>
         </div>
